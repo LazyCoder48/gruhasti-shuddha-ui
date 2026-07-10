@@ -1,0 +1,217 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap");
+
+:host {
+  display     : block;
+  position    : sticky;
+  top         : 0;
+  z-index     : 100;
+  font-family : "Hanken Grotesk", sans-serif;
+}
+
+.announcement-bar {
+  background : #4a3620;
+  color      : #f2e4c4;
+  text-align : center;
+  font       : 600 12.5px "Hanken Grotesk";
+  padding    : 9px 16px;
+}
+
+.header {
+  background    : #fffdf6;
+  border-bottom : 1px solid #eee1c2;
+}
+
+.header-inner {
+  max-width   : 1280px;
+  margin      : 0 auto;
+  padding     : 14px 34px;
+  display     : flex;
+  align-items : center;
+  gap         : 26px;
+}
+
+.brand {
+  display         : flex;
+  align-items     : center;
+  gap             : 10px;
+  text-decoration : none;
+  flex-shrink     : 0;
+
+  .logo-tile {
+    width           : 36px;
+    height          : 36px;
+    border-radius   : 11px;
+    background      : linear-gradient(150deg, #e9c15a, #c08a1e);
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    font-family     : "Cormorant Garamond", serif;
+    font-weight     : 700;
+    font-size       : 19px;
+    color           : #fff8e6;
+  }
+
+  .brand-name {
+    font-family : "Cormorant Garamond", serif;
+    font-weight : 600;
+    font-size   : 23px;
+    color       : #3a2e1c;
+  }
+}
+
+.search-bar {
+  flex          : 1;
+  max-width     : 520px;
+  display       : flex;
+  align-items   : center;
+  gap           : 8px;
+  background    : #f6ecd6;
+  border        : 1px solid #e7d9b4;
+  border-radius : 12px;
+  padding       : 10px 15px;
+
+  i {
+    color     : #b08a38;
+    font-size : 14px;
+  }
+
+  input {
+    flex       : 1;
+    border     : none;
+    background : transparent;
+    outline    : none;
+    font       : 400 14px "Hanken Grotesk";
+    color      : #3a2e1c;
+
+    &::placeholder {
+      color : #a8946a;
+    }
+  }
+}
+
+.header-actions {
+  display     : flex;
+  align-items : center;
+  gap         : 20px;
+  flex-shrink : 0;
+  margin-left : auto;
+}
+
+.icon-btn {
+  position        : relative;
+  display         : flex;
+  align-items     : center;
+  gap             : 6px;
+  text-decoration : none;
+  color           : #5a4a30;
+  font            : 600 13px "Hanken Grotesk";
+
+  i {
+    font-size : 17px;
+  }
+
+  .icon-label {
+    display : none;
+  }
+
+  &:hover {
+    color : #c08a1e;
+  }
+}
+
+.cart-badge {
+  position        : absolute;
+  top             : -6px;
+  right           : -10px;
+  background      : #c08a1e;
+  color           : #fff;
+  font            : 800 10px "Hanken Grotesk";
+  min-width       : 16px;
+  height          : 16px;
+  border-radius   : 999px;
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  padding         : 0 3px;
+}
+
+.btn-ghost {
+  border        : 1px solid #e0cc94;
+  background    : transparent;
+  color         : #6e5423;
+  font          : 600 13px "Hanken Grotesk";
+  padding       : 8px 16px;
+  border-radius : 999px;
+  cursor        : pointer;
+
+  &:hover {
+    background : #f3e4be;
+  }
+}
+
+.btn-primary-sm {
+  border        : none;
+  background    : #c08a1e;
+  color         : #fff8e6;
+  font          : 700 13px "Hanken Grotesk";
+  padding       : 9px 18px;
+  border-radius : 999px;
+  cursor        : pointer;
+
+  &:hover {
+    background : #a9761a;
+  }
+}
+
+.category-nav {
+  max-width : 1280px;
+  margin    : 0 auto;
+  padding   : 0 34px;
+  display   : flex;
+  gap       : 26px;
+  //overflow-x: auto;
+
+  a {
+    text-decoration : none;
+    color           : #6e5c3c;
+    font            : 600 13.5px "Hanken Grotesk";
+    white-space     : nowrap;
+    padding         : 10px 0;
+    margin-bottom   : -1px;
+    border-bottom   : 2px solid transparent;
+
+    &.active {
+      color        : #c08a1e;
+      border-color : #c08a1e;
+    }
+
+    &.subscribe-link {
+      color : #5c8a3c;
+    }
+
+    &:hover {
+      color : #c08a1e;
+    }
+  }
+}
+
+@media (max-width : 860px) {
+  .header-inner {
+    flex-wrap : wrap;
+    padding   : 12px 16px;
+  }
+
+  .search-bar {
+    order     : 3;
+    max-width : 100%;
+    width     : 100%;
+  }
+
+  .icon-label {
+    display : none;
+  }
+
+  .category-nav {
+    padding : 0 16px 10px;
+  }
+}

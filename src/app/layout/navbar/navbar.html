@@ -1,0 +1,65 @@
+<div class="announcement-bar">Free same-day delivery for Provident Kenworth residents · Milled every morning</div>
+
+<header class="header">
+  <div class="header-inner">
+    <a routerLink="/" class="brand">
+      <span class="logo-tile">S</span>
+      <span class="brand-name">Shuddha</span>
+    </a>
+
+    <div class="search-bar">
+      <i class="pi pi-search"></i>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+        placeholder="Search atta, besan, multigrain…"
+      />
+    </div>
+
+    <div class="header-actions">
+      @if (auth.isLoggedIn()) {
+        <a routerLink="/wishlist" class="icon-btn" title="Wishlist">
+          <i class="pi pi-heart"></i>
+          <span class="icon-label">Wishlist</span>
+          @if (wishlist.count() > 0) {
+            <span class="cart-badge">{{ wishlist.count() }}</span>
+          }
+        </a>
+        <a routerLink="/cart" class="icon-btn cart-btn" title="Cart">
+          <i class="pi pi-shopping-cart"></i>
+          <span class="icon-label">Cart</span>
+          @if (cart.count() > 0) {
+            <span class="cart-badge">{{ cart.count() }}</span>
+          }
+        </a>
+        <a routerLink="/orders" class="icon-btn" title="Orders">
+          <i class="pi pi-box"></i>
+        </a>
+        @if (auth.isAdmin()) {
+          <a routerLink="/admin" class="icon-btn" title="Admin">
+            <i class="pi pi-cog"></i>
+          </a>
+        }
+        <button type="button" class="btn-ghost" (click)="auth.logout()">Sign out</button>
+      } @else {
+        <a routerLink="/cart" class="icon-btn cart-btn" title="Cart">
+          <i class="pi pi-shopping-cart"></i>
+          <span class="icon-label">Cart</span>
+          @if (cart.count() > 0) {
+            <span class="cart-badge">{{ cart.count() }}</span>
+          }
+        </a>
+        <button type="button" class="btn-primary-sm" (click)="auth.logout()">Sign in</button>
+      }
+    </div>
+  </div>
+
+  <nav class="category-nav">
+    <a routerLink="/products" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">All flours</a>
+    @for (cat of categories; track cat.value) {
+      <a routerLink="/products" [queryParams]="{ category: cat.value }" routerLinkActive="active">{{ cat.label }}</a>
+    }
+    <a routerLink="/products" class="subscribe-link">Subscribe &amp; save</a>
+  </nav>
+</header>

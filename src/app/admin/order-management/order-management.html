@@ -1,0 +1,85 @@
+<div class="admin-shell">
+  <nav class="admin-nav">
+    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
+    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
+    <a routerLink="/" class="back-link">← Back to store</a>
+  </nav>
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Order management</h1>
+      <select class="status-filter" [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)" name="statusFilter">
+        <option value="ALL">All statuses</option>
+        @for (s of statuses; track s) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading orders…</p>
+    } @else if (filteredOrders.length === 0) {
+      <p class="hint">No orders match this filter.</p>
+    } @else {
+      <div class="order-list">
+        @for (order of filteredOrders; track order.id) {
+          <div class="order-card">
+            <div class="order-summary" (click)="toggleExpanded(order)">
+              <div class="order-id-col">
+                <div class="order-id">#{{ order.id.slice(-8).toUpperCase() }}</div>
+                <div class="order-date">{{ order.createdAt | date: 'medium' }}</div>
+              </div>
+              <div class="order-user">{{ order.userId.slice(-8) }}</div>
+              <div class="order-items-count">{{ order.items.length }} item(s)</div>
+              <span class="status-badge" [class]="order.status.toLowerCase()">{{ order.status }}</span>
+              <div class="order-total">₹{{ order.finalAmount }}</div>
+            </div>
+
+            @if (expandedId() === order.id) {
+              <div class="order-detail">
+                <div class="detail-items">
+                  @for (item of order.items; track item.productId + item.packagingSize) {
+                    <div class="detail-item">
+                      <span>{{ item.name }} ({{ item.packagingSize }}) × {{ item.quantity }}</span>
+                      <span>₹{{ item.total }}</span>
+                    </div>
+                  }
+                </div>
+                <div class="detail-address">
+                  <strong>{{ order.deliveryAddress.label }}</strong>
+                  {{ order.deliveryAddress.line1 }}, {{ order.deliveryAddress.line2 }}
+                  {{ order.deliveryAddress.city }}, {{ order.deliveryAddress.state }} {{ order.deliveryAddress.pincode }}
+                </div>
+                <div class="detail-payment">{{ order.paymentMethod }} · {{ order.paymentStatus }}</div>
+
+                @if (nextStatuses(order).length > 0) {
+                  <div class="status-actions">
+                    <span>Move to:</span>
+                    @for (next of nextStatuses(order); track next) {
+                      <button
+                        type="button"
+                        class="status-btn"
+                        [disabled]="updatingId() === order.id"
+                        (click)="updateStatus(order, next)"
+                      >
+                        {{ next }}
+                      </button>
+                    }
+                  </div>
+                } @else {
+                  <p class="terminal-hint">This order is in a final state.</p>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

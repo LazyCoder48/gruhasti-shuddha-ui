@@ -1,0 +1,153 @@
+@if (product(); as p) {
+  <div class="page-shell">
+    <app-navbar />
+
+    <div class="pdp-container">
+      <div class="breadcrumb">Home · {{ p.category }} · <span>{{ p.name }}</span></div>
+
+      <div class="pdp-main">
+        <!-- Gallery -->
+        <div class="gallery">
+          <div class="main-image">
+            <img [src]="p.image" [alt]="p.name" />
+          </div>
+          <div class="thumb-row">
+            @for (t of [0, 1, 2]; track t) {
+              <div class="thumb" [class.active]="t === 0">
+                <img [src]="p.image" [alt]="p.name" />
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="info">
+          <span class="eyebrow">{{ p.tagline }}</span>
+          <h1>{{ p.name }}</h1>
+
+          <div class="rating-row">
+            @for (filled of stars(); track $index) {
+              <i class="pi" [class.pi-star-fill]="filled" [class.pi-star]="!filled"></i>
+            }
+            <span>{{ p.rating }} · {{ p.reviewCount }} reviews</span>
+          </div>
+
+          <div class="price-row">
+            <span class="price">₹{{ effectivePack()?.price }}</span>
+            <span class="unit">/ {{ effectivePack()?.size }}</span>
+            <span class="mrp-tag">MRP incl. taxes</span>
+          </div>
+
+          <div class="pack-group">
+            <div class="group-label">Pack size</div>
+            <div class="pack-options">
+              @for (pack of p.packSizes; track pack.size) {
+                <button type="button" class="pack-option" [class.active]="pack.size === effectivePack()?.size" (click)="selectPack(pack)">
+                  <span class="pack-size">{{ pack.size }}</span>
+                  <span class="pack-price">₹{{ pack.price }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="stock-row" [class.low]="isLowStock()">
+            <span class="dot"></span>
+            {{ isLowStock() ? 'Only ' + p.stockCount + ' left' : 'In stock' }}
+            <span class="stock-extra">· delivered today</span>
+          </div>
+
+          <div class="action-row">
+            <div class="stepper">
+              <button type="button" (click)="decrement()">−</button>
+              <span>{{ quantity() }}</span>
+              <button type="button" (click)="increment()">+</button>
+            </div>
+            <button type="button" class="btn-add-cart" (click)="addToCart()">
+              {{ added() ? 'Added ✓' : 'Add to cart' }}
+            </button>
+            <button
+              type="button"
+              class="btn-wishlist"
+              [class.active]="wishlist.isWishlisted(p.id)"
+              [title]="wishlist.isWishlisted(p.id) ? 'Remove from wishlist' : 'Add to wishlist'"
+              (click)="toggleWishlist()"
+            >
+              <i class="pi" [class.pi-heart-fill]="wishlist.isWishlisted(p.id)" [class.pi-heart]="!wishlist.isWishlisted(p.id)"></i>
+            </button>
+          </div>
+
+          <div class="description-block">
+            <h3>About this flour</h3>
+            <p>{{ p.longDescription }}</p>
+          </div>
+
+          <div class="specs-block">
+            <h3>Specifications</h3>
+            <div class="specs-grid">
+              @for (spec of p.specs; track spec.label) {
+                <div class="spec-cell">
+                  <span class="spec-label">{{ spec.label }}</span>
+                  <span class="spec-value">{{ spec.value }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews -->
+      <div class="reviews-panel">
+        <div class="reviews-summary">
+          <div class="score">{{ p.rating }}</div>
+          <div>
+            <div class="stars-row">
+              @for (filled of stars(); track $index) {
+                <i class="pi" [class.pi-star-fill]="filled" [class.pi-star]="!filled"></i>
+              }
+            </div>
+            <div class="review-count">{{ p.reviewCount }} reviews</div>
+          </div>
+        </div>
+        <div class="review-list">
+          @for (r of p.reviews; track r.name) {
+            <div class="review-card">
+              <div class="review-head">
+                <div class="avatar">{{ r.initials }}</div>
+                <div>
+                  <div class="reviewer-name">{{ r.name }} <span class="verified">Verified</span></div>
+                  <div class="stars-row small">
+                    @for (i of [0, 1, 2, 3, 4]; track i) {
+                      <i class="pi" [class.pi-star-fill]="i < r.rating" [class.pi-star]="i >= r.rating"></i>
+                    }
+                  </div>
+                </div>
+              </div>
+              <p>{{ r.comment }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Related -->
+      <div class="related-section">
+        <h2>You may also like</h2>
+        <div class="related-grid">
+          @for (r of related(); track r.id) {
+            <a [routerLink]="['/products', r.id]" class="related-card">
+              <img [src]="r.image" [alt]="r.name" />
+              <div class="related-name">{{ r.name }}</div>
+              <div class="related-price">₹{{ r.packSizes[0].price }}</div>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <app-footer />
+  </div>
+} @else {
+  <div class="not-found">
+    <p>Product not found.</p>
+    <a routerLink="/products">Back to products</a>
+  </div>
+}

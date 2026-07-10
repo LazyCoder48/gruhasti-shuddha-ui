@@ -1,0 +1,65 @@
+<div class="admin-shell">
+  <nav class="admin-nav">
+    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
+    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
+    <a routerLink="/" class="back-link">← Back to store</a>
+  </nav>
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Inventory</h1>
+      <p class="subtitle">Sorted by stock, lowest first</p>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading inventory…</p>
+    } @else {
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Size</th>
+            <th>SKU</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items(); track key(item)) {
+            <tr [class]="stockLevel(item.currentStock)">
+              <td>{{ item.productName }}</td>
+              <td>{{ item.size }}</td>
+              <td>{{ item.sku || '—' }}</td>
+              <td>₹{{ item.price }}</td>
+              <td>
+                <span class="stock-badge" [class]="stockLevel(item.currentStock)">{{ item.currentStock }}</span>
+              </td>
+              <td class="adjust-cell">
+                <input
+                  type="number"
+                  min="0"
+                  [value]="draftValue(item)"
+                  (input)="setDraft(item, $any($event.target).value)"
+                />
+                <button
+                  type="button"
+                  [disabled]="savingKey() === key(item) || draftValue(item) === item.currentStock"
+                  (click)="applyAdjustment(item)"
+                >
+                  {{ savingKey() === key(item) ? 'Saving…' : 'Update' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

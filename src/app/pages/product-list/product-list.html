@@ -1,0 +1,129 @@
+<div class="page-shell">
+  <app-navbar />
+
+  <div class="plp-header">
+    <div class="breadcrumb">Home · <span>All flours</span></div>
+    <div class="toolbar">
+      <div>
+        <h1>All flours</h1>
+        <span class="count">{{ filtered().length }} products</span>
+      </div>
+      <select class="sort-select" [value]="sortKey()" (change)="sortKey.set($any($event.target).value)">
+        @for (opt of sortOptions; track opt.value) {
+          <option [value]="opt.value">Sort: {{ opt.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="plp-body">
+    <!-- Filter sidebar -->
+    <aside class="filters">
+      <div class="filters-header">
+        <span>Filters</span>
+        <button type="button" class="clear-link" (click)="clearAll()">Clear all</button>
+      </div>
+
+      <div class="filter-group">
+        <div class="group-label">Category</div>
+        @for (cat of products.categories; track cat) {
+          <label class="checkbox-row">
+            <input type="checkbox" [checked]="selectedCategories().has(cat)" (change)="toggleCategory(cat)" />
+            {{ cat }}
+          </label>
+        }
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="filter-group">
+        <div class="group-label">Pack size</div>
+        <div class="chip-row">
+          @for (size of allPackSizes; track size) {
+            <button type="button" class="chip" [class.active]="selectedPackSizes().has(size)" (click)="togglePackSize(size)">
+              {{ size }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="filter-group">
+        <div class="group-label">Price</div>
+        <input type="range" min="40" max="600" [value]="maxPrice()" (input)="maxPrice.set($any($event.target).valueAsNumber); page.set(1)" />
+        <div class="range-labels"><span>₹40</span><span>up to ₹{{ maxPrice() }}</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <label class="toggle-row">
+        <span>In stock only</span>
+        <span class="toggle-switch" [class.on]="inStockOnly()" (click)="inStockOnly.set(!inStockOnly())"></span>
+      </label>
+    </aside>
+
+    <!-- Product grid -->
+    <div class="results">
+      @if (activeFilterChips().length > 0) {
+        <div class="active-chips">
+          @for (chip of activeFilterChips(); track chip.label) {
+            <button type="button" class="active-chip" (click)="chip.clear()">{{ chip.label }} ✕</button>
+          }
+        </div>
+      }
+
+      <div class="product-grid">
+        @for (p of paged(); track p.id) {
+          <div class="product-card">
+            <a [routerLink]="['/products', p.id]" class="product-img-wrap">
+              <img [src]="p.image" [alt]="p.name" />
+            </a>
+            <button
+              type="button"
+              class="btn-wishlist-toggle"
+              [class.active]="wishlist.isWishlisted(p.id)"
+              [title]="wishlist.isWishlisted(p.id) ? 'Remove from wishlist' : 'Add to wishlist'"
+              (click)="toggleWishlist(p.id)"
+            >
+              <i class="pi" [class.pi-heart-fill]="wishlist.isWishlisted(p.id)" [class.pi-heart]="!wishlist.isWishlisted(p.id)"></i>
+            </button>
+            <div class="product-body">
+              <a [routerLink]="['/products', p.id]" class="product-name">{{ p.name }}</a>
+              <p class="product-meta">{{ p.packSizes[0].size }} · {{ p.tagline }}</p>
+              <div class="price-row">
+                <span class="price">₹{{ p.packSizes[0].price }}</span>
+              </div>
+              <div class="stock-row" [class.low]="isLowStock(p.id)">
+                <span class="dot"></span>
+                {{ isLowStock(p.id) ? 'Only ' + p.stockCount + ' left' : 'In stock' }}
+              </div>
+              @if (cartQty(p.id) > 0) {
+                <div class="qty-stepper">
+                  <button type="button" (click)="decrementQty(p.id)">−</button>
+                  <span>{{ cartQty(p.id) }}</span>
+                  <button type="button" (click)="incrementQty(p.id)">+</button>
+                </div>
+              } @else {
+                <button type="button" class="btn-add" (click)="addToCart(p.id)">Add to cart</button>
+              }
+            </div>
+          </div>
+        } @empty {
+          <p class="no-results">No products match your filters.</p>
+        }
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          @for (p of pageNumbers(); track p) {
+            <button type="button" class="page-btn" [class.active]="page() === p" (click)="goToPage(p)">{{ p }}</button>
+          }
+          <button type="button" class="page-btn" (click)="goToPage(page() + 1)">→</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <app-footer />
+</div>

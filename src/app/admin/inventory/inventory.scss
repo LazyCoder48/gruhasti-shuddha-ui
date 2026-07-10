@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  background: #F6ECD6;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 34px;
+  background: #FFFDF6;
+  border-bottom: 1px solid #E7D9B4;
+
+  a {
+    font: 600 13px 'Hanken Grotesk';
+    color: #6E5C3C;
+    text-decoration: none;
+
+    &.active {
+      color: #C08A1E;
+      font-weight: 800;
+    }
+  }
+
+  .back-link {
+    margin-left: auto;
+    color: #A8946A;
+  }
+}
+
+.admin-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 26px 34px 60px;
+}
+
+.admin-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 28px;
+  color: #3A2E1C;
+  margin: 0;
+}
+
+.subtitle {
+  font: 500 12.5px 'Hanken Grotesk';
+  color: #A8946A;
+  margin: 0;
+}
+
+.error {
+  color: #B3261E;
+  font: 600 12.5px 'Hanken Grotesk';
+  margin-bottom: 14px;
+}
+
+.hint {
+  color: #6E5C3C;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  overflow: hidden;
+
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    font: 500 13px 'Hanken Grotesk';
+    color: #3A2E1C;
+    border-bottom: 1px solid #EEE1C2;
+  }
+
+  th {
+    font: 700 12px 'Hanken Grotesk';
+    color: #8A7550;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr.low {
+    background: #FBEDED;
+  }
+}
+
+.stock-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font: 700 12px 'Hanken Grotesk';
+
+  &.ok {
+    background: #E7F3DC;
+    color: #4B7A2E;
+  }
+
+  &.medium {
+    background: #F3E4BE;
+    color: #8A6B1E;
+  }
+
+  &.low {
+    background: #F7DCDC;
+    color: #A13A3A;
+  }
+}
+
+.adjust-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  input {
+    width: 70px;
+    padding: 7px 9px;
+    border: 1px solid #E0CC94;
+    border-radius: 8px;
+    background: #FBF3DE;
+    font: 600 12.5px 'Hanken Grotesk';
+    color: #3A2E1C;
+    outline: none;
+
+    &:focus {
+      border-color: #C08A1E;
+    }
+  }
+
+  button {
+    border: none;
+    background: #C08A1E;
+    color: #FFF8E6;
+    font: 700 11.5px 'Hanken Grotesk';
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

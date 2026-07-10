@@ -1,0 +1,413 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #F6ECD6;
+}
+
+.plp-header {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 22px 34px 0;
+}
+
+.breadcrumb {
+  font: 500 12.5px 'Hanken Grotesk';
+  color: #A8946A;
+
+  span {
+    color: #3A2E1C;
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #3A2E1C;
+    margin: 0;
+  }
+
+  .count {
+    font: 500 13px 'Hanken Grotesk';
+    color: #8A7550;
+    margin-left: 10px;
+  }
+}
+
+.sort-select {
+  border: 1px solid #E7D9B4;
+  background: #FFFDF6;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font: 600 13px 'Hanken Grotesk';
+  color: #6E5C3C;
+  cursor: pointer;
+}
+
+.plp-body {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 18px 34px 40px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.filters {
+  width: 240px;
+  flex-shrink: 0;
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 800 13px 'Hanken Grotesk';
+  color: #3A2E1C;
+  margin-bottom: 14px;
+}
+
+.clear-link {
+  border: none;
+  background: transparent;
+  color: #C08A1E;
+  font: 600 12px 'Hanken Grotesk';
+  cursor: pointer;
+}
+
+.group-label {
+  font: 700 11px 'Hanken Grotesk';
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #A8946A;
+  margin-bottom: 10px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 13px 'Hanken Grotesk';
+  color: #4A3E28;
+  margin-bottom: 9px;
+  cursor: pointer;
+
+  input {
+    width: 17px;
+    height: 17px;
+    accent-color: #C08A1E;
+    cursor: pointer;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: #EEE1C2;
+  margin: 16px 0;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  border: 1px solid #E7D9B4;
+  background: #F6ECD6;
+  color: #6E5C3C;
+  font: 700 11px 'Hanken Grotesk';
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+
+  &.active {
+    background: #C08A1E;
+    color: #FFF8E6;
+    border-color: #C08A1E;
+  }
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: #C08A1E;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font: 600 12px 'Hanken Grotesk';
+  color: #6E5C3C;
+  margin-top: 6px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 600 13px 'Hanken Grotesk';
+  color: #6E5C3C;
+  cursor: pointer;
+}
+
+.toggle-switch {
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: #E7D9B4;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.15s;
+  }
+
+  &.on {
+    background: #C08A1E;
+
+    &::after {
+      transform: translateX(14px);
+    }
+  }
+}
+
+.results {
+  flex: 1;
+  min-width: 0;
+}
+
+.active-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.active-chip {
+  border: none;
+  background: #F3E4BE;
+  color: #8A6B1E;
+  font: 600 12px 'Hanken Grotesk';
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #8A7550;
+  padding: 40px 0;
+}
+
+.product-card {
+  position: relative;
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .product-img-wrap {
+    display: block;
+
+    img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+  }
+
+  .product-body {
+    padding: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .product-name {
+    font: 700 14.5px 'Hanken Grotesk';
+    color: #3A2E1C;
+    text-decoration: none;
+  }
+
+  .product-meta {
+    font: 500 11.5px 'Hanken Grotesk';
+    color: #A8946A;
+    margin: 0;
+  }
+
+  .price-row .price {
+    font: 800 18px 'Hanken Grotesk';
+    color: #3A2E1C;
+  }
+
+  .stock-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font: 600 11px 'Hanken Grotesk';
+    color: #5C8A3C;
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #5C8A3C;
+    }
+
+    &.low {
+      color: #B07A1E;
+
+      .dot {
+        background: #C98A2A;
+      }
+    }
+  }
+
+  .btn-add {
+    margin-top: 4px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 999px;
+    background: #C08A1E;
+    color: #FFF8E6;
+    font: 700 12.5px 'Hanken Grotesk';
+    cursor: pointer;
+
+    &:hover {
+      background: #A9761A;
+    }
+  }
+
+  .qty-stepper {
+    margin-top: 4px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #F3E4BE;
+    box-sizing: border-box;
+
+    button {
+      border: none;
+      background: transparent;
+      color: #C08A1E;
+      font: 800 16px 'Hanken Grotesk';
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+
+    span {
+      font: 800 14px 'Hanken Grotesk';
+      color: #3A2E1C;
+    }
+  }
+}
+
+.btn-wishlist-toggle {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: #FFFDF6;
+  color: #C08A1E;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(74, 54, 32, 0.15);
+
+  &:hover {
+    background: #F3E4BE;
+  }
+
+  &.active {
+    background: #C08A1E;
+    color: #FFF8E6;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.page-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: 1px solid #E7D9B4;
+  background: #FFFDF6;
+  color: #6E5C3C;
+  font: 700 13px 'Hanken Grotesk';
+  cursor: pointer;
+
+  &.active {
+    background: #C08A1E;
+    color: #FFF8E6;
+    border-color: #C08A1E;
+  }
+}
+
+@media (max-width: 900px) {
+  .plp-body {
+    flex-direction: column;
+  }
+
+  .filters {
+    width: 100%;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

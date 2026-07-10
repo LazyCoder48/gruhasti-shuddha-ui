@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #F6ECD6;
+}
+
+.orders-container {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 26px 34px 40px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 30px;
+  color: #3A2E1C;
+  margin: 0 0 22px;
+}
+
+.hint {
+  color: #6E5C3C;
+}
+
+.empty-orders {
+  padding: 60px 0;
+  text-align: center;
+
+  p {
+    color: #6E5C3C;
+    margin-bottom: 16px;
+  }
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 13px 24px;
+  border-radius: 999px;
+  background: #C08A1E;
+  color: #FFF8E6;
+  text-decoration: none;
+  font: 700 13px 'Hanken Grotesk';
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-card {
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.order-id {
+  font: 800 14px 'Hanken Grotesk';
+  color: #3A2E1C;
+}
+
+.order-date {
+  font: 500 12px 'Hanken Grotesk';
+  color: #A8946A;
+  margin-top: 2px;
+}
+
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #F3E4BE;
+  color: #8A6B1E;
+  font: 700 11.5px 'Hanken Grotesk';
+  letter-spacing: 0.02em;
+}
+
+.order-items {
+  border-top: 1px solid #EEE1C2;
+  border-bottom: 1px solid #EEE1C2;
+  padding: 12px 0;
+  margin-bottom: 12px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  font: 500 13px 'Hanken Grotesk';
+  color: #6E5C3C;
+  margin-bottom: 6px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 600 12.5px 'Hanken Grotesk';
+  color: #6E5C3C;
+}
+
+.order-total {
+  font: 800 16px 'Hanken Grotesk';
+  color: #3A2E1C;
+}

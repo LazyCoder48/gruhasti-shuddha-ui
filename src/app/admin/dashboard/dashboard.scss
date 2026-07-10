@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  background: #F6ECD6;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 34px;
+  background: #FFFDF6;
+  border-bottom: 1px solid #E7D9B4;
+
+  a {
+    font: 600 13px 'Hanken Grotesk';
+    color: #6E5C3C;
+    text-decoration: none;
+
+    &.active {
+      color: #C08A1E;
+      font-weight: 800;
+    }
+  }
+
+  .back-link {
+    margin-left: auto;
+    color: #A8946A;
+  }
+}
+
+.admin-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 26px 34px 60px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 28px;
+  color: #3A2E1C;
+  margin: 0 0 20px;
+}
+
+h2 {
+  font: 800 15px 'Hanken Grotesk';
+  color: #3A2E1C;
+  margin: 0 0 14px;
+}
+
+.hint {
+  color: #6E5C3C;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-tile {
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 14px;
+  padding: 18px;
+
+  &.warn {
+    border-color: #E3A9A9;
+    background: #FBEDED;
+  }
+}
+
+.stat-value {
+  font: 800 26px 'Hanken Grotesk';
+  color: #3A2E1C;
+}
+
+.stat-label {
+  font: 600 12px 'Hanken Grotesk';
+  color: #8A7550;
+  margin-top: 4px;
+}
+
+.dashboard-body {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.status-list, .recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  font: 600 12.5px 'Hanken Grotesk';
+  color: #6E5C3C;
+  padding: 6px 0;
+  border-bottom: 1px solid #EEE1C2;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.status-count {
+  font-weight: 800;
+  color: #3A2E1C;
+}
+
+.recent-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #EEE1C2;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.recent-id {
+  font: 700 12.5px 'Hanken Grotesk';
+  color: #3A2E1C;
+}
+
+.recent-date {
+  font: 500 11px 'Hanken Grotesk';
+  color: #A8946A;
+  margin-top: 2px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #F3E4BE;
+  color: #8A6B1E;
+  font: 700 10.5px 'Hanken Grotesk';
+}
+
+.recent-total {
+  font: 800 13.5px 'Hanken Grotesk';
+  color: #3A2E1C;
+}
+
+@media (max-width: 900px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-body {
+    grid-template-columns: 1fr;
+  }
+}

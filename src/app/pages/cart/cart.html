@@ -1,0 +1,83 @@
+<div class="page-shell">
+  <app-navbar />
+
+  <div class="cart-container">
+    <h1>Your cart</h1>
+
+    @if (cart.items().length === 0) {
+      <div class="empty-cart">
+        <p>Your cart is empty.</p>
+        <a routerLink="/products" class="btn-primary">Continue shopping</a>
+      </div>
+    } @else {
+      <p class="item-count">{{ cart.count() }} items</p>
+
+      <div class="cart-body">
+        <div class="line-items">
+          @for (item of cart.items(); track item.id) {
+            <div class="line-item">
+              <img [src]="item.image" [alt]="item.name" />
+              <div class="item-info">
+                <div class="item-name">{{ item.name }}</div>
+                <div class="item-variant">{{ item.packSize }} · {{ item.category }}</div>
+                <button type="button" class="remove-link" (click)="cart.remove(item.id)">Remove</button>
+              </div>
+              <div class="stepper">
+                <button type="button" (click)="cart.updateQty(item.id, item.qty - 1)">−</button>
+                <span>{{ item.qty }}</span>
+                <button type="button" (click)="cart.updateQty(item.id, item.qty + 1)">+</button>
+              </div>
+              <div class="item-price">₹{{ item.price * item.qty }}</div>
+              <button type="button" class="btn-remove-x" aria-label="Remove item" (click)="cart.remove(item.id)">
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+          }
+        </div>
+
+        <div class="order-summary">
+          <h2>Order summary</h2>
+
+          <div class="summary-row">
+            <span>Subtotal ({{ cart.count() }} items)</span>
+            <span>₹{{ cart.subtotal() }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Delivery</span>
+            <span class="free">Free</span>
+          </div>
+
+          @if (appliedCoupon()) {
+            <div class="summary-row discount">
+              <span>Coupon ({{ appliedCoupon() }})</span>
+              <span>−₹{{ discount() }}</span>
+            </div>
+            <button type="button" class="remove-coupon" (click)="removeCoupon()">Remove coupon</button>
+          } @else {
+            <div class="coupon-row">
+              <input
+                type="text"
+                placeholder="Promo code"
+                [value]="couponInput()"
+                (input)="couponInput.set($any($event.target).value)"
+              />
+              <button type="button" (click)="applyCoupon()">Apply</button>
+            </div>
+          }
+
+          <div class="divider"></div>
+
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>₹{{ total() }}</span>
+          </div>
+
+          <button type="button" class="btn-checkout" routerLink="/checkout">Checkout →</button>
+          <a routerLink="/products" class="continue-link">Continue shopping</a>
+        </div>
+      </div>
+    }
+  </div>
+
+  <app-footer />
+</div>

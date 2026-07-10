@@ -1,0 +1,46 @@
+<div class="page-shell">
+  <app-navbar />
+
+  <div class="orders-container">
+    <h1>Your orders</h1>
+
+    @if (loading()) {
+      <p class="hint">Loading orders…</p>
+    } @else if (orders().length === 0) {
+      <div class="empty-orders">
+        <p>You haven't placed any orders yet.</p>
+        <a routerLink="/products" class="btn-primary">Start shopping</a>
+      </div>
+    } @else {
+      <div class="order-list">
+        @for (order of orders(); track order.id) {
+          <div class="order-card">
+            <div class="order-header">
+              <div>
+                <div class="order-id">Order #{{ order.id.slice(-8).toUpperCase() }}</div>
+                <div class="order-date">{{ order.createdAt | date: 'medium' }}</div>
+              </div>
+              <span class="status-badge">{{ order.status }}</span>
+            </div>
+
+            <div class="order-items">
+              @for (item of order.items; track item.productId + item.packagingSize) {
+                <div class="order-item">
+                  <span>{{ item.name }} ({{ item.packagingSize }}) × {{ item.quantity }}</span>
+                  <span>₹{{ item.total }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="order-footer">
+              <span>{{ order.paymentMethod }} · {{ order.paymentStatus }}</span>
+              <span class="order-total">₹{{ order.finalAmount }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <app-footer />
+</div>

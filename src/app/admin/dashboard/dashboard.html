@@ -1,0 +1,74 @@
+<div class="admin-shell">
+  <nav class="admin-nav">
+    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
+    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
+    <a routerLink="/" class="back-link">← Back to store</a>
+  </nav>
+
+  <div class="admin-body">
+    <h1>Dashboard</h1>
+
+    @if (loading()) {
+      <p class="hint">Loading dashboard…</p>
+    } @else if (summary(); as s) {
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <div class="stat-value">{{ s.totalProducts }}</div>
+          <div class="stat-label">Products ({{ s.activeProducts }} active)</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-value">{{ s.totalOrders }}</div>
+          <div class="stat-label">Total orders</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-value">₹{{ s.totalRevenue }}</div>
+          <div class="stat-label">Revenue (excl. cancelled/refunded)</div>
+        </div>
+        <div class="stat-tile" [class.warn]="s.lowStockCount > 0">
+          <div class="stat-value">{{ s.lowStockCount }}</div>
+          <div class="stat-label">Low-stock items</div>
+        </div>
+      </div>
+
+      <div class="dashboard-body">
+        <div class="panel">
+          <h2>Orders by status</h2>
+          @if ((s.ordersByStatus | keyvalue)?.length) {
+            <div class="status-list">
+              @for (entry of s.ordersByStatus | keyvalue; track entry.key) {
+                <div class="status-row">
+                  <span>{{ entry.key }}</span>
+                  <span class="status-count">{{ entry.value }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="hint">No orders yet.</p>
+          }
+        </div>
+
+        <div class="panel">
+          <h2>Recent orders</h2>
+          @if (s.recentOrders.length === 0) {
+            <p class="hint">No orders yet.</p>
+          } @else {
+            <div class="recent-list">
+              @for (order of s.recentOrders; track order.id) {
+                <div class="recent-row">
+                  <div>
+                    <div class="recent-id">#{{ order.id.slice(-8).toUpperCase() }}</div>
+                    <div class="recent-date">{{ order.createdAt | date: 'short' }}</div>
+                  </div>
+                  <span class="status-badge">{{ order.status }}</span>
+                  <div class="recent-total">₹{{ order.finalAmount }}</div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

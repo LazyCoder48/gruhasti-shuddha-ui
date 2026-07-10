@@ -1,0 +1,42 @@
+<div class="page-shell">
+  <app-navbar />
+
+  <div class="wishlist-container">
+    <h1>Your wishlist</h1>
+
+    @if (wishlist.items().length === 0) {
+      <div class="empty-wishlist">
+        <p>Your wishlist is empty.</p>
+        <a routerLink="/products" class="btn-primary">Continue shopping</a>
+      </div>
+    } @else {
+      <p class="item-count">{{ wishlist.count() }} items</p>
+
+      <div class="wishlist-grid">
+        @for (item of wishlist.items(); track item.productId) {
+          <div class="wishlist-card">
+            <img [src]="item.image" [alt]="item.name" />
+            <div class="item-info">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-variant">{{ item.packSize }} · {{ item.category }}</div>
+              <div class="item-price">₹{{ item.price }}</div>
+              @if (item.stockCount === 0) {
+                <div class="item-stock out">Out of stock</div>
+              }
+            </div>
+            <div class="card-actions">
+              <button type="button" class="btn-move-to-cart" [disabled]="item.stockCount === 0" (click)="moveToCart(item)">
+                <i class="pi pi-shopping-cart"></i> Move to cart
+              </button>
+              <button type="button" class="btn-remove" (click)="wishlist.remove(item.productId)">
+                <i class="pi pi-trash"></i> Remove
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <app-footer />
+</div>

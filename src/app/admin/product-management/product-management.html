@@ -1,0 +1,131 @@
+<div class="admin-shell">
+  <nav class="admin-nav">
+    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
+    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
+    <a routerLink="/" class="back-link">← Back to store</a>
+  </nav>
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Product management</h1>
+      <button type="button" class="btn-primary" (click)="openCreateForm()">+ Add product</button>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (formOpen()) {
+      <form [formGroup]="form" (ngSubmit)="save()" class="product-form">
+        <h2>{{ editingId() ? 'Edit product' : 'New product' }}</h2>
+
+        <div class="field-row">
+          <label>
+            Name
+            <input type="text" formControlName="name" />
+          </label>
+          <label>
+            Category
+            <input type="text" formControlName="flourCategory" placeholder="Whole wheat, Multigrain..." />
+          </label>
+          <label>
+            Status
+            <select formControlName="status">
+              @for (s of statuses; track s) {
+                <option [value]="s">{{ s }}</option>
+              }
+            </select>
+          </label>
+        </div>
+
+        <label>
+          Tagline
+          <input type="text" formControlName="tagline" />
+        </label>
+
+        <label>
+          Description
+          <textarea formControlName="description" rows="2"></textarea>
+        </label>
+
+        <label>
+          Long description
+          <textarea formControlName="longDescription" rows="3"></textarea>
+        </label>
+
+        <label>
+          Images (one URL per line)
+          <textarea formControlName="images" rows="2"></textarea>
+        </label>
+
+        <h3>Packaging sizes</h3>
+        <div class="rows" formArrayName="packagingSizes">
+          @for (group of packagingSizes.controls; track $index) {
+            <div class="row" [formGroupName]="$index">
+              <input type="text" formControlName="size" placeholder="1 kg" />
+              <input type="number" formControlName="price" placeholder="Price" />
+              <input type="number" formControlName="discountPercent" placeholder="Discount %" />
+              <input type="number" formControlName="currentStock" placeholder="Stock" />
+              <input type="text" formControlName="sku" placeholder="SKU" />
+              <button type="button" class="remove-row" (click)="removePackagingSize($index)">✕</button>
+            </div>
+          }
+        </div>
+        <button type="button" class="btn-add-row" (click)="addPackagingSize()">+ Add packaging size</button>
+
+        <h3>Specs</h3>
+        <div class="rows" formArrayName="specs">
+          @for (group of specs.controls; track $index) {
+            <div class="row spec-row" [formGroupName]="$index">
+              <input type="text" formControlName="label" placeholder="Label" />
+              <input type="text" formControlName="value" placeholder="Value" />
+              <button type="button" class="remove-row" (click)="removeSpec($index)">✕</button>
+            </div>
+          }
+        </div>
+        <button type="button" class="btn-add-row" (click)="addSpec()">+ Add spec</button>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="saving()">
+            {{ saving() ? 'Saving…' : 'Save product' }}
+          </button>
+        </div>
+      </form>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading products…</p>
+    } @else {
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of products(); track product.id) {
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>{{ product.flourCategory }}</td>
+              <td>{{ priceRange(product) }}</td>
+              <td>{{ totalStock(product) }}</td>
+              <td><span class="status-badge" [class.inactive]="product.status !== 'ACTIVE'">{{ product.status }}</span></td>
+              <td class="actions">
+                <button type="button" (click)="openEditForm(product)">Edit</button>
+                <button type="button" class="delete" (click)="deleteProduct(product)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

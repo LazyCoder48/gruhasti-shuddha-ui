@@ -1,0 +1,78 @@
+<div class="page-shell">
+  <app-navbar />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="eyebrow">Milled this morning</span>
+      <h1>Flour as fresh as the field.</h1>
+      <p>Stone-ground in small batches and delivered the same day — nothing added, nothing stored for months.</p>
+      <div class="hero-actions">
+        <a routerLink="/products" class="btn-primary">Shop atta</a>
+        <a routerLink="/products" class="btn-secondary">Browse all</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://placehold.co/460x320/F3E4BE/8A6B1E?text=Fresh+Atta+%26+Grains" alt="Fresh atta and grains" />
+    </div>
+  </section>
+
+  <!-- Category grid -->
+  <section class="category-grid">
+    @for (cat of categoryTiles; track cat.label) {
+      <a class="category-tile" routerLink="/products" [queryParams]="{ category: cat.label }">
+        <img [src]="cat.image" [alt]="cat.label" />
+        <span>{{ cat.label }}</span>
+      </a>
+    }
+  </section>
+
+  <!-- Featured products -->
+  <section class="featured-section">
+    <div class="section-header">
+      <h2>Fresh this week</h2>
+      <a routerLink="/products" class="view-all">View all →</a>
+    </div>
+    <div class="product-grid">
+      @for (p of featured(); track p.id) {
+        <div class="product-card">
+          <a [routerLink]="['/products', p.id]" class="product-img-link">
+            <img [src]="p.image" [alt]="p.name" class="product-img" />
+          </a>
+          <div class="product-body">
+            <a [routerLink]="['/products', p.id]" class="product-name">{{ p.name }}</a>
+            <div class="pack-row">
+              @for (pack of p.packSizes; track pack.size) {
+                <span class="pack-badge">{{ pack.size }}</span>
+              }
+            </div>
+            <div class="price-row">
+              <span class="price">₹{{ p.packSizes[0].price }}</span>
+              <span class="unit">/ {{ p.packSizes[0].size }}</span>
+            </div>
+            <div class="stock-row" [class.low]="isLowStock(p.id)">
+              <span class="dot"></span>
+              {{ isLowStock(p.id) ? 'Only ' + p.stockCount + ' left' : 'In stock' }}
+            </div>
+            <button type="button" class="btn-add" (click)="addToCart(p.id)">Add to cart</button>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Value props -->
+  <section class="value-props">
+    @for (v of valueProps; track v.title) {
+      <div class="value-item">
+        <div class="value-icon"><i [class]="'pi ' + v.icon"></i></div>
+        <div>
+          <div class="value-title">{{ v.title }}</div>
+          <div class="value-subtitle">{{ v.subtitle }}</div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <app-footer />
+</div>

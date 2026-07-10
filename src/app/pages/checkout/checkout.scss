@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #F6ECD6;
+}
+
+.checkout-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 26px 34px 40px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 30px;
+  color: #3A2E1C;
+  margin: 0 0 22px;
+}
+
+h2 {
+  font: 800 15px 'Hanken Grotesk';
+  color: #3A2E1C;
+  margin: 0 0 14px;
+}
+
+.empty-cart {
+  padding: 60px 0;
+  text-align: center;
+
+  p {
+    color: #6E5C3C;
+    margin-bottom: 16px;
+  }
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 13px 24px;
+  border-radius: 999px;
+  background: #C08A1E;
+  color: #FFF8E6;
+  text-decoration: none;
+  font: 700 13px 'Hanken Grotesk';
+}
+
+.checkout-body {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.checkout-form {
+  flex: 1;
+  min-width: 320px;
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  padding: 22px;
+
+  h2:not(:first-child) {
+    margin-top: 22px;
+  }
+}
+
+label {
+  display: block;
+  font: 600 12.5px 'Hanken Grotesk';
+  color: #6E5C3C;
+  margin-bottom: 12px;
+
+  input {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid #E0CC94;
+    border-radius: 10px;
+    background: #FBF3DE;
+    font: 500 13.5px 'Hanken Grotesk';
+    color: #3A2E1C;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #C08A1E;
+    }
+  }
+}
+
+.field-row {
+  display: flex;
+  gap: 12px;
+
+  label {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.payment-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: 1px solid #E0CC94;
+  border-radius: 999px;
+  background: #FBF3DE;
+  font: 600 12.5px 'Hanken Grotesk';
+  color: #6E5C3C;
+  margin: 0;
+  cursor: pointer;
+
+  input {
+    margin: 0;
+  }
+}
+
+.error {
+  color: #B3261E;
+  font: 600 12.5px 'Hanken Grotesk';
+}
+
+.order-summary {
+  width: 340px;
+  flex-shrink: 0;
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: 500 13px 'Hanken Grotesk';
+  color: #6E5C3C;
+  margin-bottom: 10px;
+
+  span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.total {
+    font: 800 16px 'Hanken Grotesk';
+    color: #3A2E1C;
+
+    span:last-child {
+      font-size: 22px;
+    }
+  }
+}
+
+.divider {
+  height: 1px;
+  background: #EEE1C2;
+  margin: 12px 0 16px;
+}
+
+.btn-place-order {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 999px;
+  background: #C08A1E;
+  color: #FFF8E6;
+  font: 700 14px 'Hanken Grotesk';
+  cursor: pointer;
+  margin-top: 14px;
+  box-shadow: 0 12px 24px -10px rgba(192, 138, 30, 0.7);
+
+  &:hover:not(:disabled) {
+    background: #A9761A;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 900px) {
+  .checkout-body {
+    flex-direction: column;
+  }
+
+  .order-summary {
+    width: 100%;
+  }
+
+  .field-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
