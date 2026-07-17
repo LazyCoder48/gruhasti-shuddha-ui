@@ -1,0 +1,145 @@
+<div class="admin-shell">
+  <nav class="admin-nav">
+    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
+    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
+    <a routerLink="/admin/email-templates" routerLinkActive="active">Email templates</a>
+    <a routerLink="/" class="back-link">← Back to store</a>
+  </nav>
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Email templates</h1>
+      <p class="subtitle">Edit the copy sent to customers for order events. Layout and styling are fixed — only the text below changes.</p>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading templates…</p>
+    } @else {
+      <div class="template-grid">
+        <div class="template-card">
+          <h2>Order placed</h2>
+          <p class="card-hint">Sent to the customer right after they place an order.</p>
+
+          <label>
+            Subject
+            <input type="text" [ngModel]="orderPlaced().subject" (ngModelChange)="updateOrderPlacedField('subject', $event)" name="op-subject" />
+          </label>
+          <label>
+            Heading
+            <input type="text" [ngModel]="orderPlaced().heading" (ngModelChange)="updateOrderPlacedField('heading', $event)" name="op-heading" />
+          </label>
+          <label>
+            Body
+            <textarea rows="4" [ngModel]="orderPlaced().bodyText" (ngModelChange)="updateOrderPlacedField('bodyText', $event)" name="op-bodyText"></textarea>
+          </label>
+          <div class="field-row">
+            <label>
+              Button label
+              <input type="text" [ngModel]="orderPlaced().buttonLabel" (ngModelChange)="updateOrderPlacedField('buttonLabel', $event)" name="op-buttonLabel" />
+            </label>
+            <label>
+              Button URL
+              <input type="text" [ngModel]="orderPlaced().buttonUrl" (ngModelChange)="updateOrderPlacedField('buttonUrl', $event)" name="op-buttonUrl" />
+            </label>
+          </div>
+
+          <div class="header-image-field">
+            <span class="field-label">Header image</span>
+            @if (orderPlacedHeaderImagePresent()) {
+              <img class="header-image-preview" [src]="orderPlacedHeaderImageSrc()" alt="Order placed header preview" />
+              <div class="header-image-actions">
+                <label class="btn-secondary">
+                  Replace image
+                  <input type="file" accept="image/*" (change)="onHeaderImageSelected('ORDER_PLACED', $event)" hidden />
+                </label>
+                <button type="button" class="btn-link" [disabled]="uploadingOrderPlacedHeaderImage()" (click)="removeHeaderImage('ORDER_PLACED')">
+                  {{ uploadingOrderPlacedHeaderImage() ? 'Removing…' : 'Remove image' }}
+                </button>
+              </div>
+            } @else {
+              <p class="card-hint">No header image — using the default Shuddha logo header.</p>
+              <label class="btn-secondary">
+                {{ uploadingOrderPlacedHeaderImage() ? 'Uploading…' : 'Upload image' }}
+                <input type="file" accept="image/*" [disabled]="uploadingOrderPlacedHeaderImage()" (change)="onHeaderImageSelected('ORDER_PLACED', $event)" hidden />
+              </label>
+            }
+          </div>
+
+          <div class="card-actions">
+            @if (savedOrderPlaced()) {
+              <span class="saved-hint">Saved</span>
+            }
+            <button type="button" class="btn-primary" [disabled]="savingOrderPlaced()" (click)="saveOrderPlaced()">
+              {{ savingOrderPlaced() ? 'Saving…' : 'Save' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card">
+          <h2>Order status update</h2>
+          <p class="card-hint">Sent to the customer whenever an admin changes their order's status.</p>
+
+          <label>
+            Subject
+            <input type="text" [ngModel]="orderStatusUpdate().subject" (ngModelChange)="updateOrderStatusUpdateField('subject', $event)" name="osu-subject" />
+          </label>
+          <label>
+            Heading
+            <input type="text" [ngModel]="orderStatusUpdate().heading" (ngModelChange)="updateOrderStatusUpdateField('heading', $event)" name="osu-heading" />
+          </label>
+          <label>
+            Body
+            <textarea rows="4" [ngModel]="orderStatusUpdate().bodyText" (ngModelChange)="updateOrderStatusUpdateField('bodyText', $event)" name="osu-bodyText"></textarea>
+          </label>
+          <div class="field-row">
+            <label>
+              Button label
+              <input type="text" [ngModel]="orderStatusUpdate().buttonLabel" (ngModelChange)="updateOrderStatusUpdateField('buttonLabel', $event)" name="osu-buttonLabel" />
+            </label>
+            <label>
+              Button URL
+              <input type="text" [ngModel]="orderStatusUpdate().buttonUrl" (ngModelChange)="updateOrderStatusUpdateField('buttonUrl', $event)" name="osu-buttonUrl" />
+            </label>
+          </div>
+
+          <div class="header-image-field">
+            <span class="field-label">Header image</span>
+            @if (orderStatusUpdateHeaderImagePresent()) {
+              <img class="header-image-preview" [src]="orderStatusUpdateHeaderImageSrc()" alt="Order status update header preview" />
+              <div class="header-image-actions">
+                <label class="btn-secondary">
+                  Replace image
+                  <input type="file" accept="image/*" (change)="onHeaderImageSelected('ORDER_STATUS_UPDATE', $event)" hidden />
+                </label>
+                <button type="button" class="btn-link" [disabled]="uploadingOrderStatusUpdateHeaderImage()" (click)="removeHeaderImage('ORDER_STATUS_UPDATE')">
+                  {{ uploadingOrderStatusUpdateHeaderImage() ? 'Removing…' : 'Remove image' }}
+                </button>
+              </div>
+            } @else {
+              <p class="card-hint">No header image — using the default Shuddha logo header.</p>
+              <label class="btn-secondary">
+                {{ uploadingOrderStatusUpdateHeaderImage() ? 'Uploading…' : 'Upload image' }}
+                <input type="file" accept="image/*" [disabled]="uploadingOrderStatusUpdateHeaderImage()" (change)="onHeaderImageSelected('ORDER_STATUS_UPDATE', $event)" hidden />
+              </label>
+            }
+          </div>
+
+          <div class="card-actions">
+            @if (savedOrderStatusUpdate()) {
+              <span class="saved-hint">Saved</span>
+            }
+            <button type="button" class="btn-primary" [disabled]="savingOrderStatusUpdate()" (click)="saveOrderStatusUpdate()">
+              {{ savingOrderStatusUpdate() ? 'Saving…' : 'Save' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

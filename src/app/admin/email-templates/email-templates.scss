@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  background: #F6ECD6;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 34px;
+  background: #FFFDF6;
+  border-bottom: 1px solid #E7D9B4;
+
+  a {
+    font: 600 13px 'Hanken Grotesk';
+    color: #6E5C3C;
+    text-decoration: none;
+
+    &.active {
+      color: #C08A1E;
+      font-weight: 800;
+    }
+  }
+
+  .back-link {
+    margin-left: auto;
+    color: #A8946A;
+  }
+}
+
+.admin-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 26px 34px 60px;
+}
+
+.admin-header {
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 28px;
+  color: #3A2E1C;
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  font: 500 13px 'Hanken Grotesk';
+  color: #7A6544;
+  margin: 0;
+}
+
+.error {
+  color: #B3261E;
+  font: 600 12.5px 'Hanken Grotesk';
+  margin-bottom: 14px;
+}
+
+.hint {
+  color: #6E5C3C;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.template-card {
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 14px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #3A2E1C;
+    margin: 0 0 4px;
+  }
+
+  .card-hint {
+    font: 500 12px 'Hanken Grotesk';
+    color: #A8946A;
+    margin: 0 0 16px;
+  }
+
+  label {
+    display: block;
+    font: 700 11.5px 'Hanken Grotesk';
+    color: #6E5C3C;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+
+    input,
+    textarea {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 9px 12px;
+      border: 1px solid #E0CC94;
+      border-radius: 10px;
+      background: #FBF3DE;
+      font: 500 13.5px 'Hanken Grotesk';
+      color: #3A2E1C;
+      box-sizing: border-box;
+      resize: vertical;
+
+      &:focus {
+        outline: none;
+        border-color: #C08A1E;
+      }
+    }
+  }
+
+  .field-row {
+    display: flex;
+    gap: 12px;
+
+    label {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+.header-image-field {
+  margin-bottom: 16px;
+
+  .field-label {
+    display: block;
+    font: 700 11.5px 'Hanken Grotesk';
+    color: #6E5C3C;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .card-hint {
+    margin: 0 0 10px;
+  }
+
+  .header-image-preview {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    border-radius: 10px;
+    border: 1px solid #E7D9B4;
+    margin-bottom: 10px;
+  }
+
+  .header-image-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid #E0CC94;
+  border-radius: 999px;
+  background: #FBF3DE;
+  color: #6E5C3C;
+  font: 700 12px 'Hanken Grotesk';
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: normal;
+
+  &:hover {
+    border-color: #C08A1E;
+    color: #3A2E1C;
+  }
+}
+
+.btn-link {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #B3261E;
+  font: 700 12px 'Hanken Grotesk';
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.saved-hint {
+  font: 700 12px 'Hanken Grotesk';
+  color: #4B7A2E;
+}
+
+.btn-primary {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 999px;
+  background: #C08A1E;
+  color: #FFF8E6;
+  font: 700 13px 'Hanken Grotesk';
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #A9761A;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 900px) {
+  .template-grid {
+    grid-template-columns: 1fr;
+  }
+}

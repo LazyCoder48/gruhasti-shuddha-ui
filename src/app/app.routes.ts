@@ -10,6 +10,7 @@ import { Dashboard } from './admin/dashboard/dashboard';
 import { ProductManagement } from './admin/product-management/product-management';
 import { OrderManagement } from './admin/order-management/order-management';
 import { Inventory } from './admin/inventory/inventory';
+import { EmailTemplates } from './admin/email-templates/email-templates';
 import { authGuard, adminGuard } from './core/auth-guard';
 
 export const routes: Routes = [
@@ -28,7 +29,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: Dashboard },
       { path: 'products', component: ProductManagement },
       { path: 'orders', component: OrderManagement },
-      { path: 'inventory', component: Inventory }
+      { path: 'inventory', component: Inventory },
+      { path: 'email-templates', component: EmailTemplates }
     ]
   },
   { path: '**', redirectTo: '' }

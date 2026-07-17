@@ -1,8 +1,21 @@
 import { Injectable, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface AuthUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  roles: string[];
+}
+
+interface SsoMeResponse {
+  token: string;
   id: string;
   email: string;
   firstName: string;
@@ -20,7 +33,7 @@ export class AuthService {
   readonly isLoggedIn = computed(() => this._user() !== null);
   readonly isAdmin = computed(() => this._user()?.roles?.includes('ADMIN') ?? false);
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
@@ -32,6 +45,41 @@ export class AuthService {
     this._user.set(null);
     // Redirect to SSO login
     window.location.href = environment.ssoLoginUrl;
+  }
+
+  /**
+   * Called once at bootstrap (see `provideAppInitializer` in app.config.ts) to pick up a JWT
+   * handed off from sso-ui via `?ssoToken=` — a different app is almost always a different
+   * origin, so the token can't just be read out of sso-ui's own localStorage. Resolves either
+   * way; a missing/invalid token is not an error here, the normal auth guards handle that.
+   */
+  consumeSsoTokenFromUrl(): Promise<void> {
+    const token = new URLSearchParams(window.location.search).get('ssoToken');
+    if (!token) {
+      return Promise.resolve();
+    }
+    return firstValueFrom(this.hydrateFromSsoToken(token))
+      .catch(() => localStorage.removeItem(this.TOKEN_KEY))
+      .then(() => this.stripSsoTokenFromUrl());
+  }
+
+  private hydrateFromSsoToken(token: string): Observable<SsoMeResponse> {
+    localStorage.setItem(this.TOKEN_KEY, token);
+    return this.http.get<SsoMeResponse>(`${environment.ssoApiBaseUrl}/auth/me`).pipe(
+      tap((res) => {
+        const user: AuthUser = {
+          id: res.id, email: res.email, firstName: res.firstName, lastName: res.lastName, roles: res.roles,
+        };
+        localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+        this._user.set(user);
+      })
+    );
+  }
+
+  private stripSsoTokenFromUrl(): void {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('ssoToken');
+    window.history.replaceState({}, '', url.toString());
   }
 
   private loadUser(): AuthUser | null {
