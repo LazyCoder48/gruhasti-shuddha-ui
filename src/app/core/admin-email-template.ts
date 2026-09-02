@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export type EmailTemplateType = 'ORDER_PLACED' | 'ORDER_STATUS_UPDATE';
+export type EmailTemplateType = 'ORDER_PLACED' | 'ORDER_STATUS_UPDATE' | 'PRODUCT_ADDED';
 
 export interface AdminEmailTemplate {
   id: string;

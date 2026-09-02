@@ -1,12 +1,5 @@
 <div class="admin-shell">
-  <nav class="admin-nav">
-    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
-    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
-    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
-    <a routerLink="/admin/email-templates" routerLinkActive="active">Email templates</a>
-    <a routerLink="/" class="back-link">← Back to store</a>
-  </nav>
+  <app-admin-nav />
 
   <div class="admin-body">
     <div class="admin-header">
@@ -136,6 +129,65 @@
             }
             <button type="button" class="btn-primary" [disabled]="savingOrderStatusUpdate()" (click)="saveOrderStatusUpdate()">
               {{ savingOrderStatusUpdate() ? 'Saving…' : 'Save' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card">
+          <h2>New product added</h2>
+          <p class="card-hint">Sent to all active customers whenever an admin adds a new product.</p>
+
+          <label>
+            Subject
+            <input type="text" [ngModel]="productAdded().subject" (ngModelChange)="updateProductAddedField('subject', $event)" name="pa-subject" />
+          </label>
+          <label>
+            Heading
+            <input type="text" [ngModel]="productAdded().heading" (ngModelChange)="updateProductAddedField('heading', $event)" name="pa-heading" />
+          </label>
+          <label>
+            Body
+            <textarea rows="4" [ngModel]="productAdded().bodyText" (ngModelChange)="updateProductAddedField('bodyText', $event)" name="pa-bodyText"></textarea>
+          </label>
+          <div class="field-row">
+            <label>
+              Button label
+              <input type="text" [ngModel]="productAdded().buttonLabel" (ngModelChange)="updateProductAddedField('buttonLabel', $event)" name="pa-buttonLabel" />
+            </label>
+            <label>
+              Button URL
+              <input type="text" [ngModel]="productAdded().buttonUrl" (ngModelChange)="updateProductAddedField('buttonUrl', $event)" name="pa-buttonUrl" />
+            </label>
+          </div>
+
+          <div class="header-image-field">
+            <span class="field-label">Header image</span>
+            @if (productAddedHeaderImagePresent()) {
+              <img class="header-image-preview" [src]="productAddedHeaderImageSrc()" alt="New product added header preview" />
+              <div class="header-image-actions">
+                <label class="btn-secondary">
+                  Replace image
+                  <input type="file" accept="image/*" (change)="onHeaderImageSelected('PRODUCT_ADDED', $event)" hidden />
+                </label>
+                <button type="button" class="btn-link" [disabled]="uploadingProductAddedHeaderImage()" (click)="removeHeaderImage('PRODUCT_ADDED')">
+                  {{ uploadingProductAddedHeaderImage() ? 'Removing…' : 'Remove image' }}
+                </button>
+              </div>
+            } @else {
+              <p class="card-hint">No header image — using the default Shuddha logo header.</p>
+              <label class="btn-secondary">
+                {{ uploadingProductAddedHeaderImage() ? 'Uploading…' : 'Upload image' }}
+                <input type="file" accept="image/*" [disabled]="uploadingProductAddedHeaderImage()" (change)="onHeaderImageSelected('PRODUCT_ADDED', $event)" hidden />
+              </label>
+            }
+          </div>
+
+          <div class="card-actions">
+            @if (savedProductAdded()) {
+              <span class="saved-hint">Saved</span>
+            }
+            <button type="button" class="btn-primary" [disabled]="savingProductAdded()" (click)="saveProductAdded()">
+              {{ savingProductAdded() ? 'Saving…' : 'Save' }}
             </button>
           </div>
         </div>

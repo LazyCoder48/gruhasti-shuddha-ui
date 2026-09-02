@@ -1,6 +1,5 @@
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   AdminEmailTemplate,
   AdminEmailTemplateService,
@@ -8,6 +7,7 @@ import {
   headerImageUrl,
   UpdateEmailTemplateRequest,
 } from '../../core/admin-email-template';
+import { AdminNav } from '../admin-nav/admin-nav';
 
 interface EmailTemplateDraft {
   subject: string;
@@ -23,7 +23,7 @@ function emptyDraft(): EmailTemplateDraft {
 
 @Component({
   selector: 'app-email-templates',
-  imports: [FormsModule, RouterLink, RouterLinkActive],
+  imports: [FormsModule, AdminNav],
   templateUrl: './email-templates.html',
   styleUrl: './email-templates.scss',
 })
@@ -33,18 +33,24 @@ export class EmailTemplates implements OnInit {
 
   orderPlaced = signal<EmailTemplateDraft>(emptyDraft());
   orderStatusUpdate = signal<EmailTemplateDraft>(emptyDraft());
+  productAdded = signal<EmailTemplateDraft>(emptyDraft());
 
   savingOrderPlaced = signal(false);
   savingOrderStatusUpdate = signal(false);
+  savingProductAdded = signal(false);
   savedOrderPlaced = signal(false);
   savedOrderStatusUpdate = signal(false);
+  savedProductAdded = signal(false);
 
   orderPlacedHeaderImagePresent = signal(false);
   orderStatusUpdateHeaderImagePresent = signal(false);
+  productAddedHeaderImagePresent = signal(false);
   orderPlacedHeaderImageSrc = signal(headerImageUrl('ORDER_PLACED'));
   orderStatusUpdateHeaderImageSrc = signal(headerImageUrl('ORDER_STATUS_UPDATE'));
+  productAddedHeaderImageSrc = signal(headerImageUrl('PRODUCT_ADDED'));
   uploadingOrderPlacedHeaderImage = signal(false);
   uploadingOrderStatusUpdateHeaderImage = signal(false);
+  uploadingProductAddedHeaderImage = signal(false);
 
   constructor(private adminEmailTemplateService: AdminEmailTemplateService) {}
 
@@ -60,12 +66,20 @@ export class EmailTemplates implements OnInit {
     this.orderStatusUpdate.update((d) => ({ ...d, [field]: value }));
   }
 
+  updateProductAddedField(field: keyof EmailTemplateDraft, value: string): void {
+    this.productAdded.update((d) => ({ ...d, [field]: value }));
+  }
+
   saveOrderPlaced(): void {
     this.save('ORDER_PLACED', this.orderPlaced(), this.savingOrderPlaced, this.savedOrderPlaced);
   }
 
   saveOrderStatusUpdate(): void {
     this.save('ORDER_STATUS_UPDATE', this.orderStatusUpdate(), this.savingOrderStatusUpdate, this.savedOrderStatusUpdate);
+  }
+
+  saveProductAdded(): void {
+    this.save('PRODUCT_ADDED', this.productAdded(), this.savingProductAdded, this.savedProductAdded);
   }
 
   onHeaderImageSelected(type: EmailTemplateType, event: Event): void {
@@ -111,17 +125,25 @@ export class EmailTemplates implements OnInit {
     uploading: WritableSignal<boolean>;
     src: WritableSignal<string>;
   } {
-    return type === 'ORDER_PLACED'
-      ? {
-          presence: this.orderPlacedHeaderImagePresent,
-          uploading: this.uploadingOrderPlacedHeaderImage,
-          src: this.orderPlacedHeaderImageSrc,
-        }
-      : {
-          presence: this.orderStatusUpdateHeaderImagePresent,
-          uploading: this.uploadingOrderStatusUpdateHeaderImage,
-          src: this.orderStatusUpdateHeaderImageSrc,
-        };
+    if (type === 'ORDER_PLACED') {
+      return {
+        presence: this.orderPlacedHeaderImagePresent,
+        uploading: this.uploadingOrderPlacedHeaderImage,
+        src: this.orderPlacedHeaderImageSrc,
+      };
+    } else if (type === 'ORDER_STATUS_UPDATE') {
+      return {
+        presence: this.orderStatusUpdateHeaderImagePresent,
+        uploading: this.uploadingOrderStatusUpdateHeaderImage,
+        src: this.orderStatusUpdateHeaderImageSrc,
+      };
+    } else {
+      return {
+        presence: this.productAddedHeaderImagePresent,
+        uploading: this.uploadingProductAddedHeaderImage,
+        src: this.productAddedHeaderImageSrc,
+      };
+    }
   }
 
   private save(
@@ -153,6 +175,7 @@ export class EmailTemplates implements OnInit {
       next: (templates) => {
         const placed = templates.find((t) => t.type === 'ORDER_PLACED');
         const statusUpdate = templates.find((t) => t.type === 'ORDER_STATUS_UPDATE');
+        const productAdded = templates.find((t) => t.type === 'PRODUCT_ADDED');
         if (placed) {
           this.orderPlaced.set(toDraft(placed));
           this.orderPlacedHeaderImagePresent.set(placed.headerImagePresent);
@@ -160,6 +183,10 @@ export class EmailTemplates implements OnInit {
         if (statusUpdate) {
           this.orderStatusUpdate.set(toDraft(statusUpdate));
           this.orderStatusUpdateHeaderImagePresent.set(statusUpdate.headerImagePresent);
+        }
+        if (productAdded) {
+          this.productAdded.set(toDraft(productAdded));
+          this.productAddedHeaderImagePresent.set(productAdded.headerImagePresent);
         }
         this.loading.set(false);
       },
