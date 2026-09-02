@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  background: #F6ECD6;
+}
+
+.admin-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 26px 34px 60px;
+}
+
+.admin-header {
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 28px;
+  color: #3A2E1C;
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  font: 500 13px 'Hanken Grotesk';
+  color: #7A6544;
+  margin: 0;
+}
+
+.error {
+  color: #B3261E;
+  font: 600 12.5px 'Hanken Grotesk';
+  margin-bottom: 14px;
+}
+
+.hint {
+  color: #6E5C3C;
+}
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  overflow: hidden;
+
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    font: 500 13px 'Hanken Grotesk';
+    color: #3A2E1C;
+    border-bottom: 1px solid #EEE1C2;
+  }
+
+  th {
+    font: 700 12px 'Hanken Grotesk';
+    color: #8A7550;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  input[type='text'] {
+    width: 100%;
+    padding: 7px 9px;
+    border: 1px solid #E0CC94;
+    border-radius: 8px;
+    background: #FBF3DE;
+    font: 600 12.5px 'Hanken Grotesk';
+    color: #3A2E1C;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #C08A1E;
+    }
+  }
+
+  input[type='number'] {
+    padding: 7px 9px;
+    border: 1px solid #E0CC94;
+    border-radius: 8px;
+    background: #FBF3DE;
+    font: 600 12.5px 'Hanken Grotesk';
+    color: #3A2E1C;
+    outline: none;
+
+    &:focus {
+      border-color: #C08A1E;
+    }
+  }
+
+  .order-input {
+    width: 80px;
+  }
+
+  input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    accent-color: #C08A1E;
+    cursor: pointer;
+  }
+
+  .add-row td {
+    background: #FBF3DE;
+  }
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  border: none;
+  background: #C08A1E;
+  color: #FFF8E6;
+  font: 700 11.5px 'Hanken Grotesk';
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #A9761A;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-link {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #B3261E;
+  font: 700 12px 'Hanken Grotesk';
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

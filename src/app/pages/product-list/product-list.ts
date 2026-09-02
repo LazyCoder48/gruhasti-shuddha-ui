@@ -5,6 +5,7 @@ import { Footer } from '../../layout/footer/footer';
 import { ProductService, ShuddhaProduct } from '../../core/product';
 import { CartService } from '../../core/cart';
 import { WishlistService } from '../../core/wishlist';
+import { CategoryService } from '../../core/category';
 
 const PAGE_SIZE = 6;
 
@@ -43,7 +44,7 @@ export class ProductList {
       if (cats.size > 0 && !cats.has(p.category)) return false;
       if (packs.size > 0 && !p.packSizes.some((ps) => packs.has(ps.size))) return false;
       if (p.packSizes[0].price > max) return false;
-      if (stockOnly && p.stockCount < 20) return false;
+      if (stockOnly && p.lowStock) return false;
       return true;
     });
 
@@ -82,6 +83,7 @@ export class ProductList {
     readonly products: ProductService,
     readonly cart: CartService,
     readonly wishlist: WishlistService,
+    readonly categoryService: CategoryService,
     route: ActivatedRoute
   ) {
     route.queryParamMap.subscribe((params) => {
@@ -126,7 +128,7 @@ export class ProductList {
 
   isLowStock(id: string): boolean {
     const product = this.products.getById(id);
-    return !!product && product.stockCount < 20;
+    return !!product && product.lowStock;
   }
 
   cartQty(id: string): number {

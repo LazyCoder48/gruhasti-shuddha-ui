@@ -19,10 +19,10 @@
 
   <!-- Category grid -->
   <section class="category-grid">
-    @for (cat of categoryTiles; track cat.label) {
-      <a class="category-tile" routerLink="/products" [queryParams]="{ category: cat.label }">
-        <img [src]="cat.image" [alt]="cat.label" />
-        <span>{{ cat.label }}</span>
+    @for (cat of categoryService.categories(); track cat.id) {
+      <a class="category-tile" routerLink="/products" [queryParams]="{ category: cat.name }">
+        <img [src]="categoryImage(cat.name)" [alt]="cat.name" />
+        <span>{{ cat.name }}</span>
       </a>
     }
   </section>

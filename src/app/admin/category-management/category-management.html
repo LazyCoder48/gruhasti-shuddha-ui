@@ -1,0 +1,108 @@
+<div class="admin-shell">
+  <app-admin-nav />
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Categories</h1>
+      <p class="subtitle">Manage the flour categories customers browse by. Only active categories are shown on the storefront.</p>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading categories…</p>
+    } @else {
+      <table class="category-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Display order</th>
+            <th>Active</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (category of categories(); track category.id) {
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  [value]="draftName(category)"
+                  (input)="setDraftName(category, $any($event.target).value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  min="0"
+                  class="order-input"
+                  [value]="draftDisplayOrder(category)"
+                  (input)="setDraftDisplayOrder(category, $any($event.target).value)"
+                />
+              </td>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="category.active"
+                  [disabled]="savingId() === category.id"
+                  (change)="toggleActive(category)"
+                />
+              </td>
+              <td class="actions-cell">
+                <button
+                  type="button"
+                  class="btn-primary"
+                  [disabled]="savingId() === category.id || !hasDraftChanges(category)"
+                  (click)="saveRow(category)"
+                >
+                  {{ savingId() === category.id ? 'Saving…' : 'Save' }}
+                </button>
+                <button
+                  type="button"
+                  class="btn-link"
+                  [disabled]="deletingId() === category.id"
+                  (click)="deleteCategory(category)"
+                >
+                  {{ deletingId() === category.id ? 'Deleting…' : 'Delete' }}
+                </button>
+              </td>
+            </tr>
+          }
+          <tr class="add-row">
+            <td>
+              <input
+                type="text"
+                placeholder="New category name"
+                [value]="newDraft().name"
+                (input)="updateNewDraftName($any($event.target).value)"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                min="0"
+                class="order-input"
+                [value]="newDraft().displayOrder"
+                (input)="updateNewDraftDisplayOrder($any($event.target).value)"
+              />
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                [checked]="newDraft().active"
+                (change)="updateNewDraftActive($any($event.target).checked)"
+              />
+            </td>
+            <td class="actions-cell">
+              <button type="button" class="btn-primary" [disabled]="creating()" (click)="addCategory()">
+                {{ creating() ? 'Adding…' : '+ Add category' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

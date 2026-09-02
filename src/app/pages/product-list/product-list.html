@@ -26,10 +26,10 @@
 
       <div class="filter-group">
         <div class="group-label">Category</div>
-        @for (cat of products.categories; track cat) {
+        @for (cat of categoryService.categories(); track cat.id) {
           <label class="checkbox-row">
-            <input type="checkbox" [checked]="selectedCategories().has(cat)" (change)="toggleCategory(cat)" />
-            {{ cat }}
+            <input type="checkbox" [checked]="selectedCategories().has(cat.name)" (change)="toggleCategory(cat.name)" />
+            {{ cat.name }}
           </label>
         }
       </div>

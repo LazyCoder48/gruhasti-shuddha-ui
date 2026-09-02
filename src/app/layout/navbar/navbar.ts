@@ -5,6 +5,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/auth';
 import { CartService } from '../../core/cart';
 import { WishlistService } from '../../core/wishlist';
+import { CategoryService } from '../../core/category';
 
 @Component({
   selector: 'app-navbar',
@@ -15,18 +16,11 @@ import { WishlistService } from '../../core/wishlist';
 export class Navbar {
   searchQuery = '';
 
-  readonly categories = [
-    { label: 'Whole wheat', value: 'Whole wheat' },
-    { label: 'Multigrain', value: 'Multigrain' },
-    { label: 'Besan & gram', value: 'Besan & gram' },
-    { label: 'Rava & sooji', value: 'Rava & sooji' },
-    { label: 'Rice flour', value: 'Rice flour' },
-  ];
-
   constructor(
     readonly auth: AuthService,
     readonly cart: CartService,
     readonly wishlist: WishlistService,
+    readonly categoryService: CategoryService,
     private router: Router
   ) {}
 
