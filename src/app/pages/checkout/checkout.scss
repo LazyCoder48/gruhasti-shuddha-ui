@@ -138,6 +138,15 @@ label {
   font: 600 12.5px 'Hanken Grotesk';
 }
 
+.coupon-status {
+  font: 600 12.5px 'Hanken Grotesk';
+  color: #6E5C3C;
+
+  &.success {
+    color: #5C8A3C;
+  }
+}
+
 .order-summary {
   width: 340px;
   flex-shrink: 0;
@@ -160,6 +169,11 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  &.discount span:last-child {
+    color: #5C8A3C;
+    font-weight: 700;
   }
 
   &.total {

@@ -61,8 +61,15 @@
 
           <label>
             Coupon code (optional)
-            <input type="text" formControlName="couponCode" placeholder="e.g. WELCOME10" />
+            <input type="text" formControlName="couponCode" placeholder="Enter promo code" />
           </label>
+          @if (couponChecking()) {
+            <p class="coupon-status">Checking coupon…</p>
+          } @else if (couponError()) {
+            <p class="error">{{ couponError() }}</p>
+          } @else if (couponPreview()?.valid) {
+            <p class="coupon-status success">"{{ couponPreview()?.code }}" applied — you save ₹{{ discount() }}</p>
+          }
 
           @if (errorMessage()) {
             <p class="error">{{ errorMessage() }}</p>
@@ -81,9 +88,32 @@
 
           <div class="divider"></div>
 
-          <div class="summary-row total">
+          <div class="summary-row">
             <span>Subtotal</span>
             <span>₹{{ cart.subtotal() }}</span>
+          </div>
+
+          @if (discount() > 0) {
+            <div class="summary-row discount">
+              <span>Coupon ({{ couponPreview()?.code }})</span>
+              <span>−₹{{ discount() }}</span>
+            </div>
+          }
+
+          <div class="summary-row">
+            <span>Delivery fee</span>
+            @if (deliveryQuote()) {
+              <span>{{ deliveryFee() === 0 ? 'Free' : '₹' + deliveryFee() }}</span>
+            } @else {
+              <span>Enter pincode</span>
+            }
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>₹{{ total() }}</span>
           </div>
 
           <button type="submit" class="btn-place-order" [disabled]="placing()">

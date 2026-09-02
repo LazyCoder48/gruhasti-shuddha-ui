@@ -61,8 +61,13 @@
                 [value]="couponInput()"
                 (input)="couponInput.set($any($event.target).value)"
               />
-              <button type="button" (click)="applyCoupon()">Apply</button>
+              <button type="button" [disabled]="couponChecking()" (click)="applyCoupon()">
+                {{ couponChecking() ? 'Checking…' : 'Apply' }}
+              </button>
             </div>
+            @if (couponError()) {
+              <p class="coupon-error">{{ couponError() }}</p>
+            }
           }
 
           <div class="divider"></div>

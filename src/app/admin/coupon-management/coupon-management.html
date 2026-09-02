@@ -1,0 +1,117 @@
+<div class="admin-shell">
+  <app-admin-nav />
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Coupon management</h1>
+      <button type="button" class="btn-primary" (click)="openCreateForm()">+ Add coupon</button>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (formOpen()) {
+      <form [formGroup]="form" (ngSubmit)="save()" class="coupon-form">
+        <h2>{{ editingId() ? 'Edit coupon' : 'New coupon' }}</h2>
+
+        <div class="field-row">
+          <label>
+            Code
+            <input type="text" formControlName="code" placeholder="WELCOME10" />
+          </label>
+          <label>
+            Discount type
+            <select formControlName="discountType">
+              @for (t of discountTypes; track t) {
+                <option [value]="t">{{ t }}</option>
+              }
+            </select>
+          </label>
+          <label>
+            Discount value
+            <input type="number" step="0.01" formControlName="discountValue" />
+          </label>
+        </div>
+
+        <label>
+          Description
+          <textarea formControlName="description" rows="2"></textarea>
+        </label>
+
+        <div class="field-row">
+          <label>
+            Minimum order value
+            <input type="number" step="0.01" formControlName="minOrderValue" />
+          </label>
+          <label>
+            Max discount amount (optional)
+            <input type="number" step="0.01" formControlName="maxDiscountAmount" placeholder="No cap" />
+          </label>
+          <label>
+            Usage limit (optional)
+            <input type="number" formControlName="usageLimit" placeholder="Unlimited" />
+          </label>
+        </div>
+
+        <div class="field-row">
+          <label>
+            Expires on (optional)
+            <input type="date" formControlName="expiresAt" />
+          </label>
+          <label class="checkbox-field">
+            <input type="checkbox" formControlName="active" />
+            Active
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="saving()">
+            {{ saving() ? 'Saving…' : 'Save coupon' }}
+          </button>
+        </div>
+      </form>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading coupons…</p>
+    } @else {
+      <table class="coupon-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th>Discount</th>
+            <th>Min order</th>
+            <th>Active</th>
+            <th>Usage</th>
+            <th>Expires</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (coupon of coupons(); track coupon.id) {
+            <tr>
+              <td>{{ coupon.code }}</td>
+              <td>{{ coupon.description }}</td>
+              <td>{{ discountLabel(coupon) }}</td>
+              <td>₹{{ coupon.minOrderValue }}</td>
+              <td>
+                <span class="status-badge" [class.inactive]="!coupon.active">
+                  {{ coupon.active ? 'ACTIVE' : 'INACTIVE' }}
+                </span>
+              </td>
+              <td>{{ usageLabel(coupon) }}</td>
+              <td>{{ expiryLabel(coupon) }}</td>
+              <td class="actions">
+                <button type="button" (click)="openEditForm(coupon)">Edit</button>
+                <button type="button" class="delete" (click)="deleteCoupon(coupon)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

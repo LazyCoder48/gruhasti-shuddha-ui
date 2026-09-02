@@ -11,6 +11,10 @@ import { ProductManagement } from './admin/product-management/product-management
 import { OrderManagement } from './admin/order-management/order-management';
 import { Inventory } from './admin/inventory/inventory';
 import { EmailTemplates } from './admin/email-templates/email-templates';
+import { CouponManagement } from './admin/coupon-management/coupon-management';
+import { CategoryManagement } from './admin/category-management/category-management';
+import { ShippingZones } from './admin/shipping-zones/shipping-zones';
+import { ReviewModeration } from './admin/review-moderation/review-moderation';
 import { authGuard, adminGuard } from './core/auth-guard';
 
 export const routes: Routes = [
@@ -30,7 +34,11 @@ export const routes: Routes = [
       { path: 'products', component: ProductManagement },
       { path: 'orders', component: OrderManagement },
       { path: 'inventory', component: Inventory },
-      { path: 'email-templates', component: EmailTemplates }
+      { path: 'email-templates', component: EmailTemplates },
+      { path: 'coupons', component: CouponManagement },
+      { path: 'categories', component: CategoryManagement },
+      { path: 'reviews', component: ReviewModeration },
+      { path: 'shipping-zones', component: ShippingZones }
     ]
   },
   { path: '**', redirectTo: '' }
