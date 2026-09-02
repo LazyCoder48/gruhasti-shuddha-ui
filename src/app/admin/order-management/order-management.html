@@ -1,26 +1,53 @@
 <div class="admin-shell">
-  <nav class="admin-nav">
-    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
-    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
-    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
-    <a routerLink="/admin/email-templates" routerLinkActive="active">Email templates</a>
-    <a routerLink="/" class="back-link">← Back to store</a>
-  </nav>
+  <app-admin-nav />
 
   <div class="admin-body">
     <div class="admin-header">
       <h1>Order management</h1>
-      <select class="status-filter" [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)" name="statusFilter">
-        <option value="ALL">All statuses</option>
-        @for (s of statuses; track s) {
-          <option [value]="s">{{ s }}</option>
-        }
-      </select>
+      <div class="header-actions">
+        <select class="status-filter" [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)" name="statusFilter">
+          <option value="ALL">All statuses</option>
+          @for (s of statuses; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+        <button type="button" class="export-btn" [disabled]="filteredOrders.length === 0" (click)="exportCsv()">
+          Export CSV
+        </button>
+      </div>
     </div>
 
     @if (errorMessage()) {
       <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (selectedIds().size > 0) {
+      <div class="bulk-bar">
+        <span class="bulk-count">{{ selectedIds().size }} selected</span>
+        @if (canBulkUpdate()) {
+          <div class="bulk-actions">
+            <span>Move all to:</span>
+            @for (next of bulkNextStatuses(); track next) {
+              <button
+                type="button"
+                class="status-btn"
+                [disabled]="bulkUpdating()"
+                (click)="applyBulkStatus(next)"
+              >
+                {{ next }}
+              </button>
+            }
+            @if (bulkNextStatuses().length === 0) {
+              <span class="bulk-hint">Selected orders are in a final state.</span>
+            }
+          </div>
+        } @else {
+          <span class="bulk-hint">Select orders with the same status to bulk-update.</span>
+        }
+        <button type="button" class="clear-selection-btn" [disabled]="bulkUpdating()" (click)="clearSelection()">
+          Clear selection
+        </button>
+      </div>
     }
 
     @if (loading()) {
@@ -28,10 +55,24 @@
     } @else if (filteredOrders.length === 0) {
       <p class="hint">No orders match this filter.</p>
     } @else {
+      <div class="select-all-row">
+        <label class="select-all-label">
+          <input type="checkbox" [checked]="allVisibleSelected" (change)="toggleSelectAllVisible()" />
+          Select all visible
+        </label>
+      </div>
+
       <div class="order-list">
         @for (order of filteredOrders; track order.id) {
           <div class="order-card">
             <div class="order-summary" (click)="toggleExpanded(order)">
+              <input
+                type="checkbox"
+                class="order-select"
+                [checked]="isSelected(order)"
+                (click)="$event.stopPropagation()"
+                (change)="toggleSelected(order)"
+              />
               <div class="order-id-col">
                 <div class="order-id">#{{ order.id.slice(-8).toUpperCase() }}</div>
                 <div class="order-date">{{ order.createdAt | date: 'medium' }}</div>
@@ -75,6 +116,31 @@
                   </div>
                 } @else {
                   <p class="terminal-hint">This order is in a final state.</p>
+                }
+
+                @if (paymentNextStatuses(order).length > 0) {
+                  <div class="payment-override">
+                    <span>Override payment status:</span>
+                    <input
+                      type="text"
+                      class="payment-note-input"
+                      placeholder="Note (required)"
+                      [value]="paymentNoteDraft(order)"
+                      (input)="setPaymentNoteDraft(order, $any($event.target).value)"
+                    />
+                    <div class="payment-status-actions">
+                      @for (next of paymentNextStatuses(order); track next) {
+                        <button
+                          type="button"
+                          class="status-btn payment-btn"
+                          [disabled]="updatingPaymentId() === order.id || !paymentNoteDraft(order).trim()"
+                          (click)="updatePaymentStatus(order, next)"
+                        >
+                          {{ next }}
+                        </button>
+                      }
+                    </div>
+                  </div>
                 }
               </div>
             }

@@ -28,6 +28,17 @@ export const ORDER_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   REFUNDED: [],
 };
 
+export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
+
+// Mirrors OrderService.PAYMENT_ALLOWED_TRANSITIONS on the backend — the backend
+// is the source of truth and will reject anything not listed here too.
+export const PAYMENT_STATUS_TRANSITIONS: Record<PaymentStatus, PaymentStatus[]> = {
+  PENDING: ['PAID', 'FAILED', 'REFUNDED'],
+  PAID: ['FAILED', 'REFUNDED'],
+  FAILED: ['PENDING', 'PAID', 'REFUNDED'],
+  REFUNDED: [],
+};
+
 export interface AdminOrderItem {
   productId: string;
   name: string;
@@ -40,6 +51,7 @@ export interface AdminOrderItem {
 export interface AdminOrder {
   id: string;
   userId: string;
+  customerEmail: string;
   items: AdminOrderItem[];
   subtotal: number;
   discountOffered: number;
@@ -47,7 +59,8 @@ export interface AdminOrder {
   deliveryFee: number;
   finalAmount: number;
   paymentMethod: string;
-  paymentStatus: string;
+  paymentStatus: PaymentStatus;
+  paymentStatusHistory: { status: string; at: string; note: string; changedBy: string }[];
   deliveryAddress: { label: string; line1: string; line2?: string; city: string; state: string; pincode: string };
   status: OrderStatus;
   statusHistory: { status: OrderStatus; at: string; note: string }[];
@@ -66,5 +79,20 @@ export class AdminOrderService {
 
   updateStatus(id: string, status: OrderStatus, note?: string): Observable<AdminOrder> {
     return this.http.put<AdminOrder>(`${this.base}/${encodeURIComponent(id)}/status`, { status, note });
+  }
+
+  updatePaymentStatus(id: string, status: string, note: string): Observable<AdminOrder> {
+    return this.http.put<AdminOrder>(`${this.base}/${encodeURIComponent(id)}/payment-status`, { status, note });
+  }
+
+  bulkUpdateStatus(
+    orderIds: string[],
+    status: string,
+    note?: string
+  ): Observable<{ updated: AdminOrder[]; failed: { orderId: string; reason: string }[] }> {
+    return this.http.put<{ updated: AdminOrder[]; failed: { orderId: string; reason: string }[] }>(
+      `${this.base}/bulk-status`,
+      { orderIds, status, note }
+    );
   }
 }
