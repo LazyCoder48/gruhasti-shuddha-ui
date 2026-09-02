@@ -10,6 +10,7 @@ export interface InventoryItem {
   price: number;
   currentStock: number;
   sku: string;
+  lowStock: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

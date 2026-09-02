@@ -1,12 +1,5 @@
 <div class="admin-shell">
-  <nav class="admin-nav">
-    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
-    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
-    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
-    <a routerLink="/admin/email-templates" routerLinkActive="active">Email templates</a>
-    <a routerLink="/" class="back-link">← Back to store</a>
-  </nav>
+  <app-admin-nav />
 
   <div class="admin-body">
     <div class="admin-header">
@@ -26,7 +19,6 @@
           <tr>
             <th>Product</th>
             <th>Size</th>
-            <th>SKU</th>
             <th>Price</th>
             <th>Stock</th>
             <th></th>
@@ -34,13 +26,12 @@
         </thead>
         <tbody>
           @for (item of items(); track key(item)) {
-            <tr [class]="stockLevel(item.currentStock)">
+            <tr [class]="stockLevel(item)">
               <td>{{ item.productName }}</td>
               <td>{{ item.size }}</td>
-              <td>{{ item.sku || '—' }}</td>
               <td>₹{{ item.price }}</td>
               <td>
-                <span class="stock-badge" [class]="stockLevel(item.currentStock)">{{ item.currentStock }}</span>
+                <span class="stock-badge" [class]="stockLevel(item)">{{ item.currentStock }}</span>
               </td>
               <td class="adjust-cell">
                 <input

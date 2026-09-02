@@ -1,13 +1,14 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AdminInventoryService, InventoryItem } from '../../core/admin-inventory';
+import { AdminNav } from '../admin-nav/admin-nav';
 
-const LOW_STOCK_THRESHOLD = 5;
+// "low" now comes directly from the backend's lowStock field (source of truth).
+// This is a UI-only band for the "medium" visual state.
 const MEDIUM_STOCK_THRESHOLD = 15;
 
 @Component({
   selector: 'app-inventory',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [AdminNav],
   templateUrl: './inventory.html',
   styleUrl: './inventory.scss',
 })
@@ -28,9 +29,9 @@ export class Inventory implements OnInit {
     return `${item.productId}__${item.size}`;
   }
 
-  stockLevel(stock: number): 'low' | 'medium' | 'ok' {
-    if (stock <= LOW_STOCK_THRESHOLD) return 'low';
-    if (stock <= MEDIUM_STOCK_THRESHOLD) return 'medium';
+  stockLevel(item: InventoryItem): 'low' | 'medium' | 'ok' {
+    if (item.lowStock) return 'low';
+    if (item.currentStock <= MEDIUM_STOCK_THRESHOLD) return 'medium';
     return 'ok';
   }
 
