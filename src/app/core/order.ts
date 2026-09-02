@@ -29,6 +29,13 @@ export interface OrderItem {
   total: number;
 }
 
+export interface DeliveryFeeQuote {
+  fee: number;
+  zoneMatched: boolean;
+  zoneId: string | null;
+  zoneName: string | null;
+}
+
 export interface Order {
   id: string;
   userId: string;
@@ -60,5 +67,11 @@ export class OrderService {
 
   getMine(id: string): Observable<Order> {
     return this.http.get<Order>(`${environment.apiBaseUrl}/orders/${encodeURIComponent(id)}`);
+  }
+
+  quoteDeliveryFee(pincode: string, subtotal: number): Observable<DeliveryFeeQuote> {
+    return this.http.get<DeliveryFeeQuote>(
+      `${environment.apiBaseUrl}/shipping-zones/quote?pincode=${encodeURIComponent(pincode)}&subtotal=${subtotal}`
+    );
   }
 }

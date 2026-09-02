@@ -1,0 +1,87 @@
+<div class="admin-shell">
+  <app-admin-nav />
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Shipping zones</h1>
+      <button type="button" class="btn-primary" (click)="openCreateForm()">+ Add shipping zone</button>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (formOpen()) {
+      <form [formGroup]="form" (ngSubmit)="save()" class="zone-form">
+        <h2>{{ editingId() ? 'Edit shipping zone' : 'New shipping zone' }}</h2>
+
+        <div class="field-row">
+          <label>
+            Name
+            <input type="text" formControlName="name" placeholder="Central Bangalore" />
+          </label>
+          <label>
+            Delivery fee (₹)
+            <input type="number" formControlName="deliveryFee" min="0" />
+          </label>
+          <label>
+            Free delivery above (₹, optional)
+            <input type="number" formControlName="freeDeliveryThreshold" min="0" placeholder="Uses global default" />
+          </label>
+        </div>
+
+        <label>
+          Pincodes (one per line or comma-separated)
+          <textarea formControlName="pincodes" rows="4" placeholder="560001&#10;560002&#10;560003"></textarea>
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="active" />
+          Active
+        </label>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="saving()">
+            {{ saving() ? 'Saving…' : 'Save shipping zone' }}
+          </button>
+        </div>
+      </form>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading shipping zones…</p>
+    } @else {
+      <table class="zone-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Pincodes</th>
+            <th>Delivery fee</th>
+            <th>Free above</th>
+            <th>Active</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (zone of zones(); track zone.id) {
+            <tr>
+              <td>{{ zone.name }}</td>
+              <td>
+                <span class="pincode-count">{{ pincodeCount(zone) }} pincode(s)</span>
+                <span class="pincode-list">{{ zone.pincodes.join(', ') }}</span>
+              </td>
+              <td>₹{{ zone.deliveryFee }}</td>
+              <td>{{ zone.freeDeliveryThreshold !== null ? '₹' + zone.freeDeliveryThreshold : 'Default' }}</td>
+              <td><span class="status-badge" [class.inactive]="!zone.active">{{ zone.active ? 'ACTIVE' : 'INACTIVE' }}</span></td>
+              <td class="actions">
+                <button type="button" (click)="openEditForm(zone)">Edit</button>
+                <button type="button" class="delete" (click)="deleteZone(zone)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
