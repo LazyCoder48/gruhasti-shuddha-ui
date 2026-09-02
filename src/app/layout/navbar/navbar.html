@@ -50,15 +50,15 @@
             <span class="cart-badge">{{ cart.count() }}</span>
           }
         </a>
-        <button type="button" class="btn-primary-sm" (click)="auth.logout()">Sign in</button>
+        <button type="button" class="btn-primary-sm" (click)="auth.redirectToLogin()">Sign in</button>
       }
     </div>
   </div>
 
   <nav class="category-nav">
     <a routerLink="/products" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">All flours</a>
-    @for (cat of categories; track cat.value) {
-      <a routerLink="/products" [queryParams]="{ category: cat.value }" routerLinkActive="active">{{ cat.label }}</a>
+    @for (cat of categoryService.categories(); track cat.id) {
+      <a routerLink="/products" [queryParams]="{ category: cat.name }" routerLinkActive="active">{{ cat.name }}</a>
     }
     <a routerLink="/products" class="subscribe-link">Subscribe &amp; save</a>
   </nav>

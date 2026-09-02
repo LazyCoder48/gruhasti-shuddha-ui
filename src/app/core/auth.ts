@@ -31,7 +31,12 @@ export class AuthService {
   private _user = signal<AuthUser | null>(this.loadUser());
   readonly user = this._user.asReadonly();
   readonly isLoggedIn = computed(() => this._user() !== null);
-  readonly isAdmin = computed(() => this._user()?.roles?.includes('ADMIN') ?? false);
+  // SUPER_ADMIN is a strict superset of ADMIN access — checked here explicitly rather than
+  // relying on every super-admin account also literally carrying the ADMIN role.
+  readonly isAdmin = computed(() => {
+    const roles = this._user()?.roles;
+    return roles?.includes('ADMIN') || roles?.includes('SUPER_ADMIN') || false;
+  });
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -45,6 +50,12 @@ export class AuthService {
     this._user.set(null);
     // Redirect to SSO login
     window.location.href = environment.ssoLoginUrl;
+  }
+
+  /** Sends an anonymous visitor to sso-ui, tagged so it hands them back here after login. */
+  redirectToLogin(): void {
+    const returnUrl = encodeURIComponent(window.location.href);
+    window.location.href = `${environment.ssoLoginUrl}?returnUrl=${returnUrl}`;
   }
 
   /**

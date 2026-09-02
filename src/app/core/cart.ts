@@ -24,6 +24,9 @@ export class CartService {
   readonly count = computed(() => this._items().reduce((n, i) => n + i.qty, 0));
   readonly subtotal = computed(() => this._items().reduce((s, i) => s + i.price * i.qty, 0));
 
+  /** Coupon code most recently applied/validated on the cart page, used to pre-fill checkout. */
+  readonly appliedCouponCode = signal<string | null>(null);
+
   constructor(private http: HttpClient, private auth: AuthService) {
     if (this.auth.isLoggedIn()) {
       this.refresh();
@@ -61,6 +64,6 @@ export class CartService {
   }
 
   private redirectToLogin(): void {
-    window.location.href = environment.ssoLoginUrl;
+    this.auth.redirectToLogin();
   }
 }
