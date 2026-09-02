@@ -434,6 +434,100 @@ h1 {
   }
 }
 
+.write-review-panel {
+  margin-top: 24px;
+  background: #FFFDF6;
+  border: 1px solid #E7D9B4;
+  border-radius: 16px;
+  padding: 24px 26px;
+
+  h3 {
+    font: 800 14px 'Hanken Grotesk';
+    color: #3A2E1C;
+    margin: 0 0 14px;
+  }
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 480px;
+
+  .rating-input {
+    display: flex;
+    gap: 6px;
+    font-size: 20px;
+    color: #C08A1E;
+    cursor: pointer;
+  }
+
+  textarea {
+    font: 400 13.5px/1.6 'Hanken Grotesk';
+    color: #3A2E1C;
+    border: 1px solid #E0CC94;
+    border-radius: 10px;
+    padding: 10px 12px;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: #C08A1E;
+    }
+  }
+
+  .field-error {
+    font: 500 12px 'Hanken Grotesk';
+    color: #C0421E;
+  }
+
+  .review-success {
+    font: 600 13px 'Hanken Grotesk';
+    color: #5C8A3C;
+    background: #E7F0DC;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+
+  .review-error {
+    font: 600 13px 'Hanken Grotesk';
+    color: #C0421E;
+    background: #FBE6E0;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+
+  .btn-add-cart {
+    align-self: flex-start;
+    padding: 12px 28px;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.signin-prompt {
+  font: 500 13.5px 'Hanken Grotesk';
+  color: #6E5C3C;
+
+  .btn-ghost {
+    border: 1px solid #E0CC94;
+    background: transparent;
+    color: #C08A1E;
+    font: 700 13px 'Hanken Grotesk';
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    margin-right: 4px;
+
+    &:hover {
+      background: #F3E4BE;
+    }
+  }
+}
+
 .related-section {
   margin-top: 34px;
 

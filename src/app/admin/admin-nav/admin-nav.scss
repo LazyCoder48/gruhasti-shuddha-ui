@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 34px;
+  background: #FFFDF6;
+  border-bottom: 1px solid #E7D9B4;
+
+  a {
+    font: 600 13px 'Hanken Grotesk';
+    color: #6E5C3C;
+    text-decoration: none;
+
+    &.active {
+      color: #C08A1E;
+      font-weight: 800;
+    }
+  }
+
+  .back-link {
+    margin-left: auto;
+    color: #A8946A;
+  }
+}

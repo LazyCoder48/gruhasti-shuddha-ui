@@ -1,0 +1,87 @@
+<div class="admin-shell">
+  <app-admin-nav />
+
+  <div class="admin-body">
+    <div class="admin-header">
+      <h1>Review moderation</h1>
+      <select class="status-filter" [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)" name="statusFilter">
+        <option value="ALL">All statuses</option>
+        @for (s of statuses; track s) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="hint">Loading reviews…</p>
+    } @else if (filteredReviews.length === 0) {
+      <p class="hint">No reviews match this filter.</p>
+    } @else {
+      <div class="review-table">
+        <div class="review-row review-row-head">
+          <div class="col-product">Product</div>
+          <div class="col-reviewer">Reviewer</div>
+          <div class="col-rating">Rating</div>
+          <div class="col-comment">Comment</div>
+          <div class="col-date">Submitted</div>
+          <div class="col-status">Status</div>
+          <div class="col-actions">Actions</div>
+        </div>
+
+        @for (review of filteredReviews; track review.id) {
+          <div class="review-row">
+            <div class="col-product">{{ review.productName }}</div>
+            <div class="col-reviewer">
+              <div class="reviewer-name">{{ review.name }} <span class="initials">({{ review.initials }})</span></div>
+              <div class="reviewer-email">{{ review.reviewerEmail }}</div>
+            </div>
+            <div class="col-rating">
+              <span class="stars">
+                @for (star of [1, 2, 3, 4, 5]; track star) {
+                  <span [class.filled]="star <= review.rating">★</span>
+                }
+              </span>
+            </div>
+            <div class="col-comment">{{ review.comment }}</div>
+            <div class="col-date">{{ review.submittedAt ? (review.submittedAt | date: 'medium') : '—' }}</div>
+            <div class="col-status">
+              <span class="status-badge" [class]="review.status.toLowerCase()">{{ review.status }}</span>
+            </div>
+            <div class="col-actions">
+              @if (review.status === 'PENDING') {
+                <button
+                  type="button"
+                  class="action-btn approve-btn"
+                  [disabled]="updatingId() === review.id"
+                  (click)="approve(review)"
+                >
+                  Approve
+                </button>
+                <button
+                  type="button"
+                  class="action-btn reject-btn"
+                  [disabled]="updatingId() === review.id"
+                  (click)="reject(review)"
+                >
+                  Reject
+                </button>
+              }
+              <button
+                type="button"
+                class="action-btn delete-btn"
+                [disabled]="updatingId() === review.id"
+                (click)="deleteReview(review)"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

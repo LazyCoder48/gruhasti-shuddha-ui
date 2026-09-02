@@ -1,11 +1,11 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { DatePipe, KeyValuePipe } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AdminDashboardService, DashboardSummary } from '../../core/admin-dashboard';
+import { AdminNav } from '../admin-nav/admin-nav';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink, RouterLinkActive, DatePipe, KeyValuePipe],
+  imports: [DatePipe, KeyValuePipe, AdminNav],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
