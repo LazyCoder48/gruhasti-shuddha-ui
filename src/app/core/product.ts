@@ -5,6 +5,8 @@ import { environment } from '../../environments/environment';
 export interface PackOption {
   size: string;
   price: number;
+  weightValue: number | null;
+  weightUnit: 'G' | 'KG' | null;
 }
 
 export interface ProductSpec {
@@ -13,10 +15,12 @@ export interface ProductSpec {
 }
 
 export interface ProductReview {
+  id: string;
   initials: string;
   name: string;
   rating: number;
   comment: string;
+  submittedAt: string;
 }
 
 export interface ShuddhaProduct {
@@ -33,12 +37,12 @@ export interface ShuddhaProduct {
   reviewCount: number;
   specs: ProductSpec[];
   reviews: ProductReview[];
+  featured: boolean;
+  lowStock: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  readonly categories = ['Whole wheat', 'Multigrain', 'Besan & gram', 'Rava & sooji', 'Rice flour'];
-
   private _products = signal<ShuddhaProduct[]>([]);
   readonly products = this._products.asReadonly();
 

@@ -1,12 +1,5 @@
 <div class="admin-shell">
-  <nav class="admin-nav">
-    <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/admin/products" routerLinkActive="active">Products</a>
-    <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
-    <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
-    <a routerLink="/admin/email-templates" routerLinkActive="active">Email templates</a>
-    <a routerLink="/" class="back-link">← Back to store</a>
-  </nav>
+  <app-admin-nav />
 
   <div class="admin-body">
     <div class="admin-header">
@@ -39,6 +32,10 @@
               }
             </select>
           </label>
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="featured" />
+            Featured on home page
+          </label>
         </div>
 
         <label>
@@ -63,13 +60,26 @@
 
         <h3>Packaging sizes</h3>
         <div class="rows" formArrayName="packagingSizes">
+          <div class="row row-header">
+            <span>Size</span>
+            <span>Weight</span>
+            <span>Unit</span>
+            <span>Price</span>
+            <span>Discount %</span>
+            <span>Stock</span>
+            <span></span>
+          </div>
           @for (group of packagingSizes.controls; track $index) {
             <div class="row" [formGroupName]="$index">
               <input type="text" formControlName="size" placeholder="1 kg" />
+              <input type="number" formControlName="weightValue" placeholder="Weight" step="0.01" min="0" />
+              <select formControlName="weightUnit">
+                <option value="G">g</option>
+                <option value="KG">kg</option>
+              </select>
               <input type="number" formControlName="price" placeholder="Price" />
               <input type="number" formControlName="discountPercent" placeholder="Discount %" />
               <input type="number" formControlName="currentStock" placeholder="Stock" />
-              <input type="text" formControlName="sku" placeholder="SKU" />
               <button type="button" class="remove-row" (click)="removePackagingSize($index)">✕</button>
             </div>
           }
@@ -78,6 +88,11 @@
 
         <h3>Specs</h3>
         <div class="rows" formArrayName="specs">
+          <div class="row spec-row row-header">
+            <span>Label</span>
+            <span>Value</span>
+            <span></span>
+          </div>
           @for (group of specs.controls; track $index) {
             <div class="row spec-row" [formGroupName]="$index">
               <input type="text" formControlName="label" placeholder="Label" />
@@ -105,9 +120,11 @@
           <tr>
             <th>Name</th>
             <th>Category</th>
+            <th>Weight</th>
             <th>Price</th>
             <th>Stock</th>
             <th>Status</th>
+            <th>Featured</th>
             <th></th>
           </tr>
         </thead>
@@ -116,9 +133,13 @@
             <tr>
               <td>{{ product.name }}</td>
               <td>{{ product.flourCategory }}</td>
+              <td>{{ weights(product) }}</td>
               <td>{{ priceRange(product) }}</td>
               <td>{{ totalStock(product) }}</td>
               <td><span class="status-badge" [class.inactive]="product.status !== 'ACTIVE'">{{ product.status }}</span></td>
+              <td>
+                <input type="checkbox" [checked]="product.featured" (change)="toggleFeatured(product)" title="Show on home page" />
+              </td>
               <td class="actions">
                 <button type="button" (click)="openEditForm(product)">Edit</button>
                 <button type="button" class="delete" (click)="deleteProduct(product)">Delete</button>

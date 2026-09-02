@@ -1,5 +1,4 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   AdminProduct,
@@ -7,10 +6,11 @@ import {
   AdminProductService,
   AdminProductStatus,
 } from '../../core/admin-product';
+import { AdminNav } from '../admin-nav/admin-nav';
 
 @Component({
   selector: 'app-product-management',
-  imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
+  imports: [ReactiveFormsModule, AdminNav],
   templateUrl: './product-management.html',
   styleUrl: './product-management.scss',
 })
@@ -36,6 +36,7 @@ export class ProductManagement implements OnInit {
       longDescription: [''],
       images: [''],
       status: ['ACTIVE' as AdminProductStatus, Validators.required],
+      featured: [false],
       packagingSizes: this.fb.array([this.newPackagingSizeGroup()]),
       specs: this.fb.array([]),
     });
@@ -53,6 +54,15 @@ export class ProductManagement implements OnInit {
     return this.form.get('specs') as FormArray;
   }
 
+  weights(product: AdminProduct): string {
+    const labels = product.packagingSizes.map((p) =>
+      p.weightValue != null && p.weightUnit
+        ? `${p.weightValue} ${p.weightUnit.toLowerCase()}`
+        : p.size,
+    ).filter(Boolean);
+    return labels.length ? labels.join(', ') : '—';
+  }
+
   priceRange(product: AdminProduct): string {
     const prices = product.packagingSizes.map((p) => p.price);
     if (prices.length === 0) return '—';
@@ -67,7 +77,7 @@ export class ProductManagement implements OnInit {
 
   openCreateForm(): void {
     this.editingId.set(null);
-    this.form.reset({ status: 'ACTIVE' });
+    this.form.reset({ status: 'ACTIVE', featured: false });
     this.packagingSizes.clear();
     this.packagingSizes.push(this.newPackagingSizeGroup());
     this.specs.clear();
@@ -84,6 +94,7 @@ export class ProductManagement implements OnInit {
       longDescription: product.longDescription,
       images: product.images.join('\n'),
       status: product.status,
+      featured: product.featured,
     });
 
     this.packagingSizes.clear();
@@ -148,6 +159,7 @@ export class ProductManagement implements OnInit {
       packagingSizes: raw.packagingSizes,
       specs: raw.specs,
       status: raw.status,
+      featured: raw.featured,
     };
 
     const editingId = this.editingId();
@@ -164,6 +176,21 @@ export class ProductManagement implements OnInit {
       error: (err) => {
         this.saving.set(false);
         this.errorMessage.set(err.error?.message ?? 'Could not save product.');
+      },
+    });
+  }
+
+  toggleFeatured(product: AdminProduct): void {
+    const next = !product.featured;
+    this.products.update((list) =>
+      list.map((p) => (p.id === product.id ? { ...p, featured: next } : p)),
+    );
+    this.adminProductService.setFeatured(product.id, next).subscribe({
+      error: (err) => {
+        this.products.update((list) =>
+          list.map((p) => (p.id === product.id ? { ...p, featured: !next } : p)),
+        );
+        this.errorMessage.set(err.error?.message ?? 'Could not update featured status.');
       },
     });
   }
@@ -196,6 +223,8 @@ export class ProductManagement implements OnInit {
       discountPercent: [value?.discountPercent ?? 0],
       currentStock: [value?.currentStock ?? 0, [Validators.required, Validators.min(0)]],
       sku: [value?.sku ?? ''],
+      weightValue: [value?.weightValue ?? null, [Validators.required, Validators.min(0)]],
+      weightUnit: [value?.weightUnit ?? 'KG', Validators.required],
     });
   }
 

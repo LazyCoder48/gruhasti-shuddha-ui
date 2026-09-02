@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export type WeightUnit = 'G' | 'KG';
+
 export interface AdminPackagingSize {
   size: string;
   price: number;
@@ -10,6 +12,8 @@ export interface AdminPackagingSize {
   discountedPrice: number;
   currentStock: number;
   sku: string;
+  weightValue: number | null;
+  weightUnit: WeightUnit | null;
 }
 
 export interface AdminProductSpec {
@@ -32,6 +36,7 @@ export interface AdminProduct {
   status: AdminProductStatus;
   rating: number;
   reviewCount: number;
+  featured: boolean;
 }
 
 export interface AdminProductRequest {
@@ -44,6 +49,7 @@ export interface AdminProductRequest {
   packagingSizes: AdminPackagingSize[];
   specs: AdminProductSpec[];
   status: AdminProductStatus;
+  featured: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -66,6 +72,10 @@ export class AdminProductService {
 
   update(id: string, req: AdminProductRequest): Observable<AdminProduct> {
     return this.http.put<AdminProduct>(`${this.base}/${encodeURIComponent(id)}`, req);
+  }
+
+  setFeatured(id: string, featured: boolean): Observable<AdminProduct> {
+    return this.http.put<AdminProduct>(`${this.base}/${encodeURIComponent(id)}/featured`, { featured });
   }
 
   delete(id: string): Observable<void> {
